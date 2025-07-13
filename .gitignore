@@ -47,3 +47,10 @@ Thumbs.db
 .next
 out
 test-output
+
+# Environment variables
+.env
+.env.local
+
+# Prisma
+/libs/prisma/src/generated/prisma
