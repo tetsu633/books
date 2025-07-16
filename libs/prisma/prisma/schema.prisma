@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Category {
-  id        String   @id @default(autoincrement())
+  id        Int   @id @default(autoincrement())
   name      String
   type      String
   userId    String
@@ -20,7 +20,7 @@ model Category {
 }
 
 model Entry {
-  id         String   @id @default(autoincrement())
+  id         Int   @id @default(autoincrement())
   amount     Int
   date       DateTime
   memo       String?
