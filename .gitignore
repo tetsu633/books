@@ -54,3 +54,6 @@ test-output
 
 # Prisma
 /libs/prisma/src/generated/prisma
+
+# Build info
+tsconfig.tsbuildinfo
