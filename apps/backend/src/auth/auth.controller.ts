@@ -2,6 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from '@prisma/client';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -12,6 +13,14 @@ export class AuthController {
     return await this.authService.createUser({
       email: createUserDto.email,
       password: createUserDto.password,
+    });
+  }
+
+  @Post('login')
+  async login(@Body() LoginUserDto: LoginUserDto): Promise<User | null> {
+    return await this.authService.loginUser({
+      email: LoginUserDto.email,
+      password: LoginUserDto.password,
     });
   }
 }

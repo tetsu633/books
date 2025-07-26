@@ -2,6 +2,8 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { CreateUserDto } from './dto/create-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -32,6 +34,38 @@ export class AuthService {
               detail: 'The email address is already in use',
             },
             409
+          );
+        }
+      }
+
+      throw error;
+    }
+  }
+
+  /**
+   * Userをログインする
+   * @param param0 email, password
+   * @returns User
+   */
+  async loginUser({ email, password }: LoginUserDto): Promise<User | null> {
+    try {
+      return await this.prismaService.user.findUnique({
+        where: {
+          email,
+          password,
+        },
+      });
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new HttpException(
+            {
+              type: '/errors?type=invalid-credentials',
+              title: 'Invalid credentials',
+              status: 401,
+              detail: 'The email or password is incorrect',
+            },
+            401
           );
         }
       }
