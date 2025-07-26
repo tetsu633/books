@@ -1,0 +1,8 @@
+[phases.setup]
+nixPkgs = ["nodejs-20_x"]
+
+[phases.build]
+cmds = ["npm ci", "npx prisma generate --schema=./libs/prisma/prisma/schema.prisma", "npx nx build backend"]
+
+[start]
+cmd = "node apps/backend/dist/main.js"
