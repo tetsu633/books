@@ -1,9 +1,9 @@
 [build]
 builder = "NIXPACKS"
 nixPkgs = ["nodejs-20_x"]
-buildCommand = "npm install && npx nx build backend"
+buildCommand = "cd ../.. && npm install && npx nx build backend"
 
 [deploy]
-startCommand = "node apps/backend/dist/main.js"
+startCommand = "node dist/main.js"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
