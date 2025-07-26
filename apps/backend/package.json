@@ -2,6 +2,10 @@
   "name": "@books/backend",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "start": "node dist/main.js",
+    "build": "cd ../.. && npx prisma generate --schema=./libs/prisma/prisma/schema.prisma && npx nx build backend"
+  },
   "nx": {
     "targets": {
       "build": {
