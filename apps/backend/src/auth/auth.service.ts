@@ -6,6 +6,11 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 export class AuthService {
   constructor(private readonly prismaService: PrismaService) {}
 
+  /**
+   * Userを作成する
+   * @param param0 email, password
+   * @returns User
+   */
   async createUser({ email, password }: { email: string; password: string }) {
     try {
       return await this.prismaService.user.create({
