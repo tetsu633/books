@@ -1,7 +1,7 @@
 [build]
 builder = "NIXPACKS"
 nixPkgs = ["nodejs-20_x"]
-buildCommand = "cd ../.. && npm install && npx nx build backend"
+buildCommand = "cd ../.. && npm install && npx nx build backend && cp -r apps/backend/dist ."
 
 [deploy]
 startCommand = "node dist/main.js"
