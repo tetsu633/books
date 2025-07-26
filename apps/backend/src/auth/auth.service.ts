@@ -1,6 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -11,7 +12,7 @@ export class AuthService {
    * @param param0 email, password
    * @returns User
    */
-  async createUser({ email, password }: { email: string; password: string }) {
+  async createUser({ email, password }: CreateUserDto) {
     try {
       return await this.prismaService.user.create({
         data: {
