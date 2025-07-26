@@ -1,14 +1,14 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/binary';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class AuthService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  createUser({ email, password }: { email: string; password: string }) {
+  async createUser({ email, password }: { email: string; password: string }) {
     try {
-      return this.prismaService.user.create({
+      return await this.prismaService.user.create({
         data: {
           email,
           password,
@@ -16,6 +16,7 @@ export class AuthService {
       });
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
+        // ユーザーがすでに存在する場合
         if (error.code === 'P2002') {
           throw new HttpException(
             {
