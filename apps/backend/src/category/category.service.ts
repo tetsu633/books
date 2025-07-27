@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { DeleteCategoryDto } from './dto/delete-category.dto';
+import { GetCategoriesDto } from './dto/get-category.dto';
 
 @Injectable()
 export class CategoryService {
@@ -49,6 +50,19 @@ export class CategoryService {
     return await this.prismaService.category.delete({
       where: {
         id,
+      },
+    });
+  }
+
+  /**
+   * カテゴリを取得する
+   * @param param0 カテゴリの情報
+   * @returns 取得したカテゴリ
+   */
+  async getCategories({ userId }: GetCategoriesDto) {
+    return await this.prismaService.category.findMany({
+      where: {
+        userId,
       },
     });
   }
