@@ -1,7 +1,8 @@
-import { Body, Controller, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Patch, Post } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { DeleteCategoryDto } from './dto/delete-category.dto';
 
 @Controller('category')
 export class CategoryController {
@@ -22,6 +23,13 @@ export class CategoryController {
       id: updateCategoryDto.id,
       name: updateCategoryDto.name,
       type: updateCategoryDto.type,
+    });
+  }
+
+  @Delete()
+  async deleteCategory(@Body() deleteCategoryDto: DeleteCategoryDto) {
+    return await this.categoryService.deleteCategory({
+      id: deleteCategoryDto.id,
     });
   }
 }
