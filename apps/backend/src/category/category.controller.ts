@@ -1,6 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Patch, Post } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Controller('category')
 export class CategoryController {
@@ -12,6 +13,15 @@ export class CategoryController {
       userId: createCategoryDto.userId,
       name: createCategoryDto.name,
       type: createCategoryDto.type,
+    });
+  }
+
+  @Patch()
+  async updateCategory(@Body() updateCategoryDto: UpdateCategoryDto) {
+    return await this.categoryService.updateCategory({
+      id: updateCategoryDto.id,
+      name: updateCategoryDto.name,
+      type: updateCategoryDto.type,
     });
   }
 }
