@@ -4,6 +4,7 @@ import { CreateEntriesDto } from './dto/create-entries.dto';
 import { DeleteEntriesDto } from './dto/delete-entries.dto';
 import { GetEntriesDto } from './dto/get-entries.dto';
 import { UpdateEntriesDto } from './dto/update-entries.dto';
+import { GetSummaryDto } from './dto/get-summary.dto';
 
 @Controller('entries')
 export class EntriesController {
@@ -42,6 +43,15 @@ export class EntriesController {
   async getEntries(@Body() getEntriesDto: GetEntriesDto) {
     return await this.entriesService.getEntries({
       userId: getEntriesDto.userId,
+    });
+  }
+
+  @Get('summary/monthly')
+  async getMonthlySummary(@Body() getSummaryDto: GetSummaryDto) {
+    return await this.entriesService.getSummary({
+      userId: getSummaryDto.userId,
+      year: getSummaryDto.year,
+      month: getSummaryDto.month,
     });
   }
 }
