@@ -18,7 +18,7 @@ export class CreateEntriesDto {
 
   @IsNotEmpty()
   @IsDateString()
-  date: Date;
+  date: Date; // ISO 8601 形式の日付
 
   constructor(userId: string, amount: number, date: Date, memo: string, categoryId: number) {
     this.userId = userId;
