@@ -1,0 +1,116 @@
+'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/Button';
+
+export const Header: React.FC = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  return (
+    <header className="bg-white shadow-sm border-b border-gray-200">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex items-center">
+            <Link href="/" className="text-xl font-bold text-gray-900">
+              家計簿アプリ
+            </Link>
+          </div>
+
+          <nav className="hidden md:flex items-center space-x-6">
+            <Link href="/entries" className="text-gray-700 hover:text-gray-900 transition-colors">
+              入出金
+            </Link>
+            <Link
+              href="/categories"
+              className="text-gray-700 hover:text-gray-900 transition-colors"
+            >
+              カテゴリ
+            </Link>
+            <Link href="/summary" className="text-gray-700 hover:text-gray-900 transition-colors">
+              月次収支
+            </Link>
+          </nav>
+
+          <div className="hidden md:flex items-center space-x-4">
+            <Link href="/login">
+              <Button variant="outline" size="sm">
+                ログイン
+              </Button>
+            </Link>
+            <Link href="/signup">
+              <Button variant="primary" size="sm">
+                新規登録
+              </Button>
+            </Link>
+          </div>
+
+          <button
+            onClick={toggleMenu}
+            className="md:hidden p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+          >
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              {isMenuOpen ? (
+                <path d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+        </div>
+
+        {isMenuOpen && (
+          <div className="md:hidden border-t border-gray-200 py-4">
+            <nav className="flex flex-col space-y-2">
+              <Link
+                href="/entries"
+                className="px-3 py-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                入出金
+              </Link>
+              <Link
+                href="/categories"
+                className="px-3 py-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                カテゴリ
+              </Link>
+              <Link
+                href="/summary"
+                className="px-3 py-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                月次収支
+              </Link>
+            </nav>
+            <div className="mt-4 pt-4 border-t border-gray-200 flex flex-col space-y-2">
+              <Link href="/login" onClick={() => setIsMenuOpen(false)}>
+                <Button variant="outline" size="sm" className="w-full">
+                  ログイン
+                </Button>
+              </Link>
+              <Link href="/signup" onClick={() => setIsMenuOpen(false)}>
+                <Button variant="primary" size="sm" className="w-full">
+                  新規登録
+                </Button>
+              </Link>
+            </div>
+          </div>
+        )}
+      </div>
+    </header>
+  );
+};
