@@ -14,10 +14,11 @@ export class AuthService {
    * @param param0 email, password
    * @returns User
    */
-  async createUser({ email, password }: CreateUserDto) {
+  async createUser({ name, email, password }: CreateUserDto) {
     try {
       return await this.prismaService.user.create({
         data: {
+          name,
           email,
           password,
         },
