@@ -24,3 +24,24 @@ export async function createUser(userData: {
 
   return res.json();
 }
+
+/**
+ * ログインする
+ * @param userData ユーザー情報
+ * @returns ユーザー情報
+ */
+export async function loginUser(userData: { email: string; password: string }): Promise<User> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(userData),
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to login');
+  }
+
+  return res.json();
+}

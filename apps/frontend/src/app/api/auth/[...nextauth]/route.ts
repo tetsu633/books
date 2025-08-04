@@ -1,6 +1,6 @@
 import NextAuth, { User } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import { createUser } from '@/services/auth';
+import { createUser, loginUser } from '@/services/auth';
 
 const handler = NextAuth({
   providers: [
@@ -12,24 +12,40 @@ const handler = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials): Promise<User | null> {
-        if (!credentials?.email || !credentials?.password || !credentials?.name) {
+        if (!credentials?.email || !credentials?.password) {
           return null;
         }
 
         try {
-          const user = await createUser({
-            name: credentials.name,
-            email: credentials.email,
-            password: credentials.password,
-          });
+          if (credentials.name) {
+            const user = await createUser({
+              name: credentials.name,
+              email: credentials.email,
+              password: credentials.password,
+            });
 
-          if (user) {
-            return {
-              id: user.id,
-              name: user.name,
-              email: user.email,
-              password: user.password,
-            };
+            if (user) {
+              return {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                password: user.password,
+              };
+            }
+          } else {
+            const user = await loginUser({
+              email: credentials.email,
+              password: credentials.password,
+            });
+
+            if (user) {
+              return {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                password: user.password,
+              };
+            }
           }
         } catch (error) {
           console.error(error);
