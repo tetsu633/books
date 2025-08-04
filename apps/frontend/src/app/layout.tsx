@@ -2,6 +2,7 @@ import './global.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { MobileNav } from '@/components/layout/MobileNav';
+import { Providers } from './providers';
 
 export const metadata = {
   title: '家計簿アプリ - シンプルな資産管理',
@@ -12,12 +13,14 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ja">
-      <body className="bg-gray-50 min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-1 pb-16 md:pb-0">{children}</main>
-        <Footer />
-        <MobileNav />
-      </body>
+      <Providers>
+        <body className="bg-gray-50 min-h-screen flex flex-col">
+          <Header />
+          <main className="flex-1 pb-16 md:pb-0">{children}</main>
+          <Footer />
+          <MobileNav />
+        </body>
+      </Providers>
     </html>
   );
 }

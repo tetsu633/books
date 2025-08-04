@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
-import { Card, CardHeader, CardBody, CardFooter } from '@/components/ui/Card';
+import { Card, CardHeader, CardBody } from '@/components/ui/Card';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function SignupPage() {
   const [name, setName] = useState('');
@@ -11,13 +13,28 @@ export default function SignupPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert('パスワードが一致しません');
       return;
     }
-    console.log('Signup with:', { name, email, password });
+
+    const result = await signIn('credentials', {
+      name,
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (result?.error) {
+      alert(result.error);
+      return;
+    }
+
+    router.push('/entries');
   };
 
   return (
