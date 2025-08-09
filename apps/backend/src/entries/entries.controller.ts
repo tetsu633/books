@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Patch, Post, Query } from '@nestjs/common';
 import { EntriesService } from './entries.service';
 import { CreateEntriesDto } from './dto/create-entries.dto';
 import { DeleteEntriesDto } from './dto/delete-entries.dto';
@@ -41,7 +41,7 @@ export class EntriesController {
   }
 
   @Get()
-  async getEntries(@Body() getEntriesDto: GetEntriesDto) {
+  async getEntries(@Query() getEntriesDto: GetEntriesDto) {
     return await this.entriesService.getEntries({
       userId: getEntriesDto.userId,
     });
