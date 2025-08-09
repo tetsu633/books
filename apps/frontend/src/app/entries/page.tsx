@@ -194,7 +194,7 @@ export default function EntriesPage() {
                   <div className="flex items-center gap-4">
                     <div
                       className={`w-2 h-12 rounded ${
-                        entry.categoryName === 'income' ? 'bg-green-500' : 'bg-red-500'
+                        entry.entryType === 'income' ? 'bg-green-500' : 'bg-red-500'
                       }`}
                     />
                     <div>
@@ -205,10 +205,10 @@ export default function EntriesPage() {
                   </div>
                   <div
                     className={`text-lg font-semibold ${
-                      entry.categoryName === 'income' ? 'text-green-600' : 'text-red-600'
+                      entry.entryType === 'income' ? 'text-green-600' : 'text-red-600'
                     }`}
                   >
-                    {entry.categoryName === 'income' ? '+' : '-'}
+                    {entry.entryType === 'income' ? '+' : '-'}
                     {formatCurrency(entry.amount)}
                   </div>
                 </div>
