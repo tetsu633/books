@@ -28,3 +28,24 @@ export const createEntry = async (entry: {
 
   return res.json();
 };
+
+/**
+ * 入出金情報を取得する
+ * @returns 入出金情報
+ */
+export const getEntries = async ({ userId }: { userId: string }): Promise<Entry[]> => {
+  const params = new URLSearchParams({ userId });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/entries?${params}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!res.ok) {
+    console.error(res);
+    throw new Error('Failed to get entries');
+  }
+
+  return res.json();
+};

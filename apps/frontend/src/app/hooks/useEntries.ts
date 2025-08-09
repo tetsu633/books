@@ -1,5 +1,5 @@
 import { demoData } from '@/data/demo-data';
-import { createEntry } from '@/services/entry';
+import { createEntry, getEntries } from '@/services/entry';
 import { Entry } from '@/types/entry';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
@@ -13,12 +13,44 @@ interface EntryWithoutId extends Omit<Entry, 'id' | 'userId'> {}
  */
 export const useEntries = () => {
   const [entries, setEntries] = useState<EntryWithoutId[]>([]);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
-  // デモデータを取得する
+  /**
+   * 入出金情報を取得する
+   */
   useEffect(() => {
-    setEntries(demoData);
-  }, []);
+    initEntries(status);
+  }, [status]);
+
+  /**
+   * 入出金情報を取得する
+   * @param status セッションの状態
+   */
+  const initEntries = async (status: string) => {
+    // セッションの状態に応じて入出金情報を取得する
+    switch (status) {
+      // 認証時
+      case 'authenticated':
+        if (!session?.user.id) return;
+        const entries = await getEntries({ userId: session?.user.id });
+        setEntries(
+          entries.map((entry) => ({
+            ...entry,
+            date: new Date(entry.date),
+          }))
+        );
+        break;
+
+      // 未認証時
+      case 'unauthenticated':
+        setEntries(demoData);
+        break;
+
+      // default時は何もしない
+      default:
+        break;
+    }
+  };
 
   /**
    * 入出金情報を追加する
