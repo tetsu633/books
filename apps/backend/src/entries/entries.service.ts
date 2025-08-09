@@ -68,6 +68,14 @@ export class EntriesService {
       where: {
         userId,
       },
+      include: {
+        Category: {
+          select: {
+            name: true,
+            type: true,
+          },
+        },
+      },
     });
   }
 
