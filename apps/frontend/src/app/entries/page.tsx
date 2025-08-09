@@ -18,6 +18,7 @@ export default function EntriesPage() {
   const { entries, addEntry } = useEntries();
   const [showForm, setShowForm] = useState(false);
   const [entryType, setEntryType] = useState<'income' | 'expense'>('expense');
+  const [filterType, setFilterType] = useState<'all' | 'income' | 'expense'>('all');
 
   const {
     register,
@@ -78,13 +79,31 @@ export default function EntriesPage() {
 
         <div className="flex justify-between items-center mb-4">
           <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={() => {}}>
+            <Button
+              variant={filterType === 'all' ? 'primary' : 'outline'}
+              size="sm"
+              onClick={() => {
+                setFilterType('all');
+              }}
+            >
               すべて
             </Button>
-            <Button variant="ghost" size="sm" onClick={() => {}}>
+            <Button
+              variant={filterType === 'income' ? 'primary' : 'outline'}
+              size="sm"
+              onClick={() => {
+                setFilterType('income');
+              }}
+            >
               収入
             </Button>
-            <Button variant="ghost" size="sm" onClick={() => {}}>
+            <Button
+              variant={filterType === 'expense' ? 'primary' : 'outline'}
+              size="sm"
+              onClick={() => {
+                setFilterType('expense');
+              }}
+            >
               支出
             </Button>
           </div>
@@ -190,34 +209,45 @@ export default function EntriesPage() {
 
         {/* 入出金情報一覧 */}
         <div className="space-y-4">
-          {entries.map((entry, index) => (
-            <Card key={`${entry.categoryName}-${index}`} variant="bordered">
-              <CardBody>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
+          {entries
+            .filter((entry) => {
+              if (filterType === 'all') return true;
+              if (filterType === 'income') return entry.entryType === 'income';
+              if (filterType === 'expense') return entry.entryType === 'expense';
+              return false;
+            })
+            .map((entry, index) => (
+              <Card key={`${entry.categoryName}-${index}`} variant="bordered">
+                <CardBody>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div
+                        className={`w-2 h-12 rounded ${
+                          entry.entryType === 'income' ? 'bg-green-500' : 'bg-red-500'
+                        }`}
+                      />
+                      <div>
+                        <div className="font-medium text-gray-900">{entry.categoryName}</div>
+                        <div className="text-sm text-gray-500">
+                          {entry.date.toLocaleDateString()}
+                        </div>
+                        {entry.memo && (
+                          <div className="text-sm text-gray-600 mt-1">{entry.memo}</div>
+                        )}
+                      </div>
+                    </div>
                     <div
-                      className={`w-2 h-12 rounded ${
-                        entry.entryType === 'income' ? 'bg-green-500' : 'bg-red-500'
+                      className={`text-lg font-semibold ${
+                        entry.entryType === 'income' ? 'text-green-600' : 'text-red-600'
                       }`}
-                    />
-                    <div>
-                      <div className="font-medium text-gray-900">{entry.categoryName}</div>
-                      <div className="text-sm text-gray-500">{entry.date.toLocaleDateString()}</div>
-                      {entry.memo && <div className="text-sm text-gray-600 mt-1">{entry.memo}</div>}
+                    >
+                      {entry.entryType === 'income' ? '+' : '-'}
+                      {formatCurrency(entry.amount)}
                     </div>
                   </div>
-                  <div
-                    className={`text-lg font-semibold ${
-                      entry.entryType === 'income' ? 'text-green-600' : 'text-red-600'
-                    }`}
-                  >
-                    {entry.entryType === 'income' ? '+' : '-'}
-                    {formatCurrency(entry.amount)}
-                  </div>
-                </div>
-              </CardBody>
-            </Card>
-          ))}
+                </CardBody>
+              </Card>
+            ))}
         </div>
       </div>
     </div>
