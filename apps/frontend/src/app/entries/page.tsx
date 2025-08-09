@@ -4,39 +4,63 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Card, CardBody } from '@/components/ui/Card';
 import { useEntries } from '../hooks/useEntries';
-import { EntryWithCategory } from '@/types/entry';
+import { useForm } from 'react-hook-form';
+
+interface IEntryForm {
+  userId: string;
+  amount: number;
+  categoryName: string;
+  date: string;
+  memo: string;
+}
 
 export default function EntriesPage() {
-  const { entries, setEntries } = useEntries();
-
+  const { entries, addEntry } = useEntries();
   const [showForm, setShowForm] = useState(false);
   const [entryType, setEntryType] = useState<'income' | 'expense'>('expense');
-  const [amount, setAmount] = useState('');
-  const [category, setCategory] = useState('');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
-  const [note, setNote] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const newEntry: EntryWithCategory = {
-      id: Date.now().toString(),
-      userId: '1',
-      amount: Number(amount),
-      categoryId: Number(category),
-      date: new Date(date),
-      memo: note,
-      category: {
-        name: category,
-        type: entryType,
-      },
-    };
-    setEntries([newEntry, ...entries]);
+  const {
+    register,
+    handleSubmit: handleSubmitForm,
+    reset,
+  } = useForm<IEntryForm>({
+    defaultValues: {
+      amount: undefined,
+      memo: '',
+      categoryName: undefined,
+      date: new Date().toISOString().split('T')[0],
+    },
+  });
+
+  /**
+   * 入出金情報を追加する
+   * @param data 入出金情報
+   */
+  const handleSubmit = async (data: IEntryForm) => {
+    await addEntry({
+      amount: Number(data.amount),
+      categoryName: data.categoryName,
+      date: new Date(data.date),
+      memo: data.memo,
+      entryType,
+    });
+
     setShowForm(false);
-    setAmount('');
-    setCategory('');
-    setNote('');
+    setEntryType('expense');
+    reset();
   };
 
+  const handleCancel = () => {
+    setShowForm(false);
+    setEntryType('expense');
+    reset();
+  };
+
+  /**
+   * 金額をフォーマットする
+   * @param amount 金額
+   * @returns フォーマットされた金額
+   */
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('ja-JP', {
       style: 'currency',
@@ -67,10 +91,11 @@ export default function EntriesPage() {
           </Button>
         </div>
 
+        {/* 入出金情報登録フォーム */}
         {showForm && (
           <Card className="mb-6">
             <CardBody>
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmitForm(handleSubmit)} className="space-y-4">
                 <div className="flex gap-4 mb-4">
                   <Button
                     type="button"
@@ -95,21 +120,19 @@ export default function EntriesPage() {
                     <label className="block text-sm font-medium text-gray-700 mb-1">金額</label>
                     <input
                       type="number"
-                      value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="0"
                       required
+                      {...register('amount')}
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">カテゴリ</label>
                     <select
-                      value={category}
-                      onChange={(e) => setCategory(e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
+                      {...register('categoryName')}
                     >
                       <option value="">選択してください</option>
                       {entryType === 'income' ? (
@@ -134,10 +157,9 @@ export default function EntriesPage() {
                     <label className="block text-sm font-medium text-gray-700 mb-1">日付</label>
                     <input
                       type="date"
-                      value={date}
-                      onChange={(e) => setDate(e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       required
+                      {...register('date')}
                     />
                   </div>
 
@@ -145,16 +167,15 @@ export default function EntriesPage() {
                     <label className="block text-sm font-medium text-gray-700 mb-1">メモ</label>
                     <input
                       type="text"
-                      value={note}
-                      onChange={(e) => setNote(e.target.value)}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       placeholder="任意"
+                      {...register('memo')}
                     />
                   </div>
                 </div>
 
                 <div className="flex justify-end gap-2">
-                  <Button type="button" variant="outline" onClick={() => setShowForm(false)}>
+                  <Button type="button" variant="outline" onClick={handleCancel}>
                     キャンセル
                   </Button>
                   <Button type="submit">登録</Button>
@@ -164,29 +185,30 @@ export default function EntriesPage() {
           </Card>
         )}
 
+        {/* 入出金情報一覧 */}
         <div className="space-y-4">
-          {entries.map((entry) => (
-            <Card key={entry.id} variant="bordered">
+          {entries.map((entry, index) => (
+            <Card key={`${entry.categoryName}-${index}`} variant="bordered">
               <CardBody>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div
                       className={`w-2 h-12 rounded ${
-                        entry.category.type === 'income' ? 'bg-green-500' : 'bg-red-500'
+                        entry.categoryName === 'income' ? 'bg-green-500' : 'bg-red-500'
                       }`}
                     />
                     <div>
-                      <div className="font-medium text-gray-900">{entry.category.name}</div>
+                      <div className="font-medium text-gray-900">{entry.categoryName}</div>
                       <div className="text-sm text-gray-500">{entry.date.toLocaleDateString()}</div>
                       {entry.memo && <div className="text-sm text-gray-600 mt-1">{entry.memo}</div>}
                     </div>
                   </div>
                   <div
                     className={`text-lg font-semibold ${
-                      entry.category.type === 'income' ? 'text-green-600' : 'text-red-600'
+                      entry.categoryName === 'income' ? 'text-green-600' : 'text-red-600'
                     }`}
                   >
-                    {entry.category.type === 'income' ? '+' : '-'}
+                    {entry.categoryName === 'income' ? '+' : '-'}
                     {formatCurrency(entry.amount)}
                   </div>
                 </div>
