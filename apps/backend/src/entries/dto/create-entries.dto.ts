@@ -6,12 +6,16 @@ export class CreateEntriesDto {
   userId: string;
 
   @IsNotEmpty()
+  @IsString()
+  entryType: 'income' | 'expense';
+
+  @IsNotEmpty()
   @IsNumber()
   amount: number;
 
   @IsNotEmpty()
-  @IsNumber()
-  categoryId: number;
+  @IsString()
+  categoryName: string;
 
   @IsString()
   memo: string;
@@ -20,11 +24,19 @@ export class CreateEntriesDto {
   @IsDateString()
   date: Date; // ISO 8601 形式の日付
 
-  constructor(userId: string, amount: number, date: Date, memo: string, categoryId: number) {
+  constructor(
+    userId: string,
+    amount: number,
+    date: Date,
+    memo: string,
+    categoryName: string,
+    entryType: 'income' | 'expense'
+  ) {
     this.userId = userId;
     this.amount = amount;
     this.date = date;
     this.memo = memo;
-    this.categoryId = categoryId;
+    this.categoryName = categoryName;
+    this.entryType = entryType;
   }
 }

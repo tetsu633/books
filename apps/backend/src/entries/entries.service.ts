@@ -15,12 +15,13 @@ export class EntriesService {
    * @param param0 入出金の情報
    * @returns 作成した入出金
    */
-  async createEntries({ amount, date, memo, userId, categoryId }: CreateEntriesDto) {
+  async createEntries({ amount, date, memo, userId, categoryName, entryType }: CreateEntriesDto) {
     return await this.prismaService.entry.create({
       data: {
         userId,
+        entryType,
+        categoryName,
         amount,
-        categoryId,
         memo,
         date,
       },
@@ -32,14 +33,14 @@ export class EntriesService {
    * @param param0 入出金の情報
    * @returns 更新した入出金
    */
-  async updateEntries({ id, amount, date, memo, categoryId }: UpdateEntriesDto) {
+  async updateEntries({ id, amount, date, memo, categoryName }: UpdateEntriesDto) {
     return await this.prismaService.entry.update({
       where: {
         id,
       },
       data: {
         amount,
-        categoryId,
+        categoryName,
         memo,
         date,
       },
@@ -68,14 +69,6 @@ export class EntriesService {
       where: {
         userId,
       },
-      include: {
-        Category: {
-          select: {
-            name: true,
-            type: true,
-          },
-        },
-      },
     });
   }
 
@@ -86,7 +79,7 @@ export class EntriesService {
    */
   async getSummary({ userId, year, month }: GetSummaryDto) {
     return await this.prismaService.entry.groupBy({
-      by: ['categoryId'],
+      by: ['categoryName'],
       where: {
         userId,
         date: {

@@ -10,8 +10,8 @@ export class UpdateEntriesDto {
   amount: number;
 
   @IsNotEmpty()
-  @IsNumber()
-  categoryId: number;
+  @IsString()
+  categoryName: string;
 
   @IsString()
   memo: string;
@@ -20,11 +20,11 @@ export class UpdateEntriesDto {
   @IsDateString()
   date: Date;
 
-  constructor(id: number, amount: number, date: Date, memo: string, categoryId: number) {
+  constructor(id: number, amount: number, date: Date, memo: string, categoryName: string) {
     this.id = id;
     this.amount = amount;
     this.date = date;
     this.memo = memo;
-    this.categoryId = categoryId;
+    this.categoryName = categoryName;
   }
 }

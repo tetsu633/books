@@ -14,10 +14,11 @@ export class EntriesController {
   async createEntries(@Body() createEntriesDto: CreateEntriesDto) {
     return await this.entriesService.createEntries({
       userId: createEntriesDto.userId,
+      entryType: createEntriesDto.entryType,
       amount: createEntriesDto.amount,
       date: createEntriesDto.date,
       memo: createEntriesDto.memo,
-      categoryId: createEntriesDto.categoryId,
+      categoryName: createEntriesDto.categoryName,
     });
   }
 
@@ -28,7 +29,7 @@ export class EntriesController {
       amount: updateEntriesDto.amount,
       date: updateEntriesDto.date,
       memo: updateEntriesDto.memo,
-      categoryId: updateEntriesDto.categoryId,
+      categoryName: updateEntriesDto.categoryName,
     });
   }
 

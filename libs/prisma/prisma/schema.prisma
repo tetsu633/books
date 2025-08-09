@@ -16,20 +16,19 @@ model Category {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   User      User     @relation(fields: [userId], references: [id])
-  Entry     Entry[]
 }
 
 model Entry {
-  id         Int   @id @default(autoincrement())
-  amount     Int
-  date       DateTime
-  memo       String?
-  userId     String
-  categoryId Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  Category   Category @relation(fields: [categoryId], references: [id])
-  User       User     @relation(fields: [userId], references: [id])
+  id             Int   @id @default(autoincrement())
+  amount         Int
+  date           DateTime
+  memo           String?
+  userId         String
+  entryType      String // "income" or "expense"
+  categoryName   String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  User           User     @relation(fields: [userId], references: [id])
 }
 
 model User {
