@@ -3,38 +3,11 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Card, CardBody } from '@/components/ui/Card';
-
-interface Entry {
-  id: string;
-  type: 'income' | 'expense';
-  amount: number;
-  categoryId: string;
-  categoryName: string;
-  date: string;
-  note: string;
-}
+import { useEntries } from '../hooks/useEntries';
+import { EntryWithCategory } from '@/types/entry';
 
 export default function EntriesPage() {
-  const [entries, setEntries] = useState<Entry[]>([
-    {
-      id: '1',
-      type: 'income',
-      amount: 300000,
-      categoryId: '1',
-      categoryName: '給与',
-      date: '2024-01-25',
-      note: '1月分給与',
-    },
-    {
-      id: '2',
-      type: 'expense',
-      amount: 1200,
-      categoryId: '2',
-      categoryName: '食費',
-      date: '2024-01-24',
-      note: 'スーパーで買い物',
-    },
-  ]);
+  const { entries, setEntries } = useEntries();
 
   const [showForm, setShowForm] = useState(false);
   const [entryType, setEntryType] = useState<'income' | 'expense'>('expense');
@@ -45,14 +18,17 @@ export default function EntriesPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const newEntry: Entry = {
+    const newEntry: EntryWithCategory = {
       id: Date.now().toString(),
-      type: entryType,
+      userId: '1',
       amount: Number(amount),
-      categoryId: category,
-      categoryName: category,
-      date,
-      note,
+      categoryId: Number(category),
+      date: new Date(date),
+      memo: note,
+      category: {
+        name: category,
+        type: entryType,
+      },
     };
     setEntries([newEntry, ...entries]);
     setShowForm(false);
@@ -196,21 +172,21 @@ export default function EntriesPage() {
                   <div className="flex items-center gap-4">
                     <div
                       className={`w-2 h-12 rounded ${
-                        entry.type === 'income' ? 'bg-green-500' : 'bg-red-500'
+                        entry.category.type === 'income' ? 'bg-green-500' : 'bg-red-500'
                       }`}
                     />
                     <div>
-                      <div className="font-medium text-gray-900">{entry.categoryName}</div>
-                      <div className="text-sm text-gray-500">{entry.date}</div>
-                      {entry.note && <div className="text-sm text-gray-600 mt-1">{entry.note}</div>}
+                      <div className="font-medium text-gray-900">{entry.category.name}</div>
+                      <div className="text-sm text-gray-500">{entry.date.toLocaleDateString()}</div>
+                      {entry.memo && <div className="text-sm text-gray-600 mt-1">{entry.memo}</div>}
                     </div>
                   </div>
                   <div
                     className={`text-lg font-semibold ${
-                      entry.type === 'income' ? 'text-green-600' : 'text-red-600'
+                      entry.category.type === 'income' ? 'text-green-600' : 'text-red-600'
                     }`}
                   >
-                    {entry.type === 'income' ? '+' : '-'}
+                    {entry.category.type === 'income' ? '+' : '-'}
                     {formatCurrency(entry.amount)}
                   </div>
                 </div>
