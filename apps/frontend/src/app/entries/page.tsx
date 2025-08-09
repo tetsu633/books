@@ -50,6 +50,9 @@ export default function EntriesPage() {
     reset();
   };
 
+  /**
+   * フォームをキャンセルする
+   */
   const handleCancel = () => {
     setShowForm(false);
     setEntryType('expense');
