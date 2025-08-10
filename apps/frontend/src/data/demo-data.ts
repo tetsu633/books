@@ -5,7 +5,7 @@ import { Summary, YearlySummary } from '@/types/summary';
 // デモデータ
 export const demoData: Entry[] = [
   {
-    id: '1',
+    id: 1,
     userId: '1',
     amount: 300000,
     date: new Date('2025-01-25'),
@@ -14,7 +14,7 @@ export const demoData: Entry[] = [
     entryType: 'income',
   },
   {
-    id: '2',
+    id: 2,
     userId: '1',
     amount: 1200,
     date: new Date('2025-01-24'),
