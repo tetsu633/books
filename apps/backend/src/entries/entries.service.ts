@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateEntriesDto } from './dto/create-entries.dto';
-import { DeleteEntriesDto } from './dto/delete-entries.dto';
 import { GetEntriesDto } from './dto/get-entries.dto';
 import { UpdateEntriesDto } from './dto/update-entries.dto';
 
@@ -51,7 +50,7 @@ export class EntriesService {
    * @param param0 入出金のID
    * @returns 削除した入出金
    */
-  async deleteEntries({ id }: DeleteEntriesDto) {
+  async deleteEntries({ id }: { id: number }) {
     return await this.prismaService.entry.delete({
       where: {
         id,

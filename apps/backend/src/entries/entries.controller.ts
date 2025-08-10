@@ -1,7 +1,6 @@
-import { Body, Controller, Delete, Get, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { EntriesService } from './entries.service';
 import { CreateEntriesDto } from './dto/create-entries.dto';
-import { DeleteEntriesDto } from './dto/delete-entries.dto';
 import { GetEntriesDto } from './dto/get-entries.dto';
 import { UpdateEntriesDto } from './dto/update-entries.dto';
 
@@ -32,10 +31,10 @@ export class EntriesController {
     });
   }
 
-  @Delete()
-  async deleteEntries(@Body() deleteEntriesDto: DeleteEntriesDto) {
+  @Delete(':id')
+  async deleteEntries(@Param('id') id: string) {
     return await this.entriesService.deleteEntries({
-      id: deleteEntriesDto.id,
+      id: Number(id),
     });
   }
 
