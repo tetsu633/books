@@ -6,6 +6,7 @@ import { Card, CardBody } from '@/components/ui/Card';
 import { useEntries } from '../hooks/useEntries';
 import { useForm } from 'react-hook-form';
 import { formatCurrency } from '@/utils/currency';
+import { IconTrash } from '@tabler/icons-react';
 
 interface IEntryForm {
   userId: string;
@@ -16,7 +17,7 @@ interface IEntryForm {
 }
 
 export default function EntriesPage() {
-  const { entries, addEntry } = useEntries();
+  const { entries, createEntry, deleteEntry } = useEntries();
   const [showForm, setShowForm] = useState(false);
   const [entryType, setEntryType] = useState<'income' | 'expense'>('expense');
   const [filterType, setFilterType] = useState<'all' | 'income' | 'expense'>('all');
@@ -39,7 +40,7 @@ export default function EntriesPage() {
    * @param data 入出金情報
    */
   const handleSubmit = async (data: IEntryForm) => {
-    await addEntry({
+    await createEntry({
       amount: Number(data.amount),
       categoryName: data.categoryName,
       date: new Date(data.date),
@@ -225,13 +226,26 @@ export default function EntriesPage() {
                         )}
                       </div>
                     </div>
-                    <div
-                      className={`text-lg font-semibold ${
-                        entry.entryType === 'income' ? 'text-green-600' : 'text-red-600'
-                      }`}
-                    >
-                      {entry.entryType === 'income' ? '+' : '-'}
-                      {formatCurrency(entry.amount)}
+                    <div className="flex flex-col items-end gap-2">
+                      <div
+                        className={`text-lg font-semibold ${
+                          entry.entryType === 'income' ? 'text-green-600' : 'text-red-600'
+                        }`}
+                      >
+                        {entry.entryType === 'income' ? '+' : '-'}
+                        {formatCurrency(entry.amount)}
+                      </div>
+
+                      <button
+                        className="text-gray-500 hover:text-gray-700"
+                        onClick={() => {
+                          if (entry.id && confirm('このデータを削除してもよろしいですか？')) {
+                            deleteEntry(entry.id);
+                          }
+                        }}
+                      >
+                        <IconTrash />
+                      </button>
                     </div>
                   </div>
                 </CardBody>

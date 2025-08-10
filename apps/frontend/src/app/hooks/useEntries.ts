@@ -1,11 +1,15 @@
 import { demoData } from '@/data/demo-data';
-import { createEntry, getEntries } from '@/services/entry';
+import {
+  createEntry as createEntryApi,
+  getEntries,
+  deleteEntry as deleteEntryApi,
+} from '@/services/entry';
 import { Entry } from '@/types/entry';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 // 入出金情報の型
-interface EntryWithoutId extends Omit<Entry, 'id' | 'userId'> {}
+interface EntryWithoutId extends Omit<Entry, 'userId'> {}
 
 /**
  * 入出金情報を取得する
@@ -56,11 +60,11 @@ export const useEntries = () => {
    * 入出金情報を追加する
    * @param entry 入出金情報
    */
-  const addEntry = async (entry: EntryWithoutId) => {
+  const createEntry = async (entry: EntryWithoutId) => {
     if (!session) {
       setEntries([entry, ...entries]);
     } else {
-      await createEntry({
+      await createEntryApi({
         userId: session.user.id,
         amount: entry.amount,
         date: entry.date,
@@ -72,5 +76,18 @@ export const useEntries = () => {
     }
   };
 
-  return { entries, addEntry };
+  /**
+   * 入出金情報を削除する
+   * @param id 入出金情報のID
+   */
+  const deleteEntry = async (id: number) => {
+    if (!session) {
+      setEntries(entries.filter((entry) => entry.id !== id));
+    } else {
+      await deleteEntryApi({ id: id.toString() });
+      setEntries(entries.filter((entry) => entry.id !== id));
+    }
+  };
+
+  return { entries, createEntry, deleteEntry };
 };

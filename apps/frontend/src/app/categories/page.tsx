@@ -6,6 +6,7 @@ import { Card, CardBody } from '@/components/ui/Card';
 import { Category, colors } from '@/types/category';
 import { useCategories } from '../hooks/useCategories';
 import { useForm } from 'react-hook-form';
+import { IconEdit, IconTrash } from '@tabler/icons-react';
 
 interface ICategoryForm {
   userId: string;
@@ -194,28 +195,26 @@ export default function CategoriesPage() {
                       <div className={`w-4 h-4 rounded ${colors[category.color]}`} />
                       <span className="font-medium">{category.name}</span>
                     </div>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
+                    <div className="flex gap-4">
+                      <button
                         onClick={() => {
                           handleEdit(category);
                           setEditingCategory(category);
                         }}
+                        className="text-gray-500 hover:text-gray-700"
                       >
-                        編集
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
+                        <IconEdit />
+                      </button>
+                      <button
                         onClick={() => {
                           if (category.id) {
                             handleDelete(category.id);
                           }
                         }}
+                        className="text-gray-500 hover:text-gray-700"
                       >
-                        削除
-                      </Button>
+                        <IconTrash />
+                      </button>
                     </div>
                   </CardBody>
                 </Card>
@@ -236,21 +235,26 @@ export default function CategoriesPage() {
                       <div className={`w-4 h-4 rounded ${colors[category.color]}`} />
                       <span className="font-medium">{category.name}</span>
                     </div>
-                    <div className="flex gap-2">
-                      <Button variant="ghost" size="sm" onClick={() => handleEdit(category)}>
-                        編集
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
+                    <div className="flex gap-4">
+                      <button
+                        onClick={() => {
+                          handleEdit(category);
+                          setEditingCategory(category);
+                        }}
+                        className="text-gray-500 hover:text-gray-700"
+                      >
+                        <IconEdit />
+                      </button>
+                      <button
                         onClick={() => {
                           if (category.id) {
                             handleDelete(category.id);
                           }
                         }}
+                        className="text-gray-500 hover:text-gray-700"
                       >
-                        削除
-                      </Button>
+                        <IconTrash />
+                      </button>
                     </div>
                   </CardBody>
                 </Card>

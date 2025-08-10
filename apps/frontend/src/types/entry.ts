@@ -1,6 +1,6 @@
 // 入出金情報
 export interface Entry {
-  id: string;
+  id?: number;
   userId: string;
   amount: number;
   categoryName: string;
