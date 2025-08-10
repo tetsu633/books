@@ -1,5 +1,6 @@
 import { Category } from '@/types/category';
 import { Entry } from '@/types/entry';
+import { Summary } from '@/types/summary';
 
 // デモデータ
 export const demoData: Entry[] = [
@@ -56,3 +57,44 @@ export const defaultCategories: Category[] = [
     color: 'bg-purple-500',
   },
 ];
+
+export const defaultMonthlySummaryData: Summary = {
+  month: { year: 2024, month: 1 },
+  categorySummary: [
+    {
+      amount: 45000,
+      categoryName: '食費',
+      entryType: 'expense',
+    },
+    {
+      amount: 70000,
+      categoryName: '家賃',
+      entryType: 'income',
+    },
+    {
+      amount: 15000,
+      categoryName: '光熱費',
+      entryType: 'expense',
+    },
+    {
+      amount: 12000,
+      categoryName: '交通費',
+      entryType: 'expense',
+    },
+    {
+      amount: 8000,
+      categoryName: '日用品',
+      entryType: 'expense',
+    },
+    {
+      amount: 35000,
+      categoryName: 'その他',
+      entryType: 'expense',
+    },
+  ],
+  totalIncome: 300000,
+  totalExpense: 185000,
+  categories: defaultCategories,
+  previousMonthIncome: 100000,
+  previousMonthExpense: 50000,
+};

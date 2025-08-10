@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Card, CardBody } from '@/components/ui/Card';
 import { useEntries } from '../hooks/useEntries';
 import { useForm } from 'react-hook-form';
+import { formatCurrency } from '@/utils/currency';
 
 interface IEntryForm {
   userId: string;
@@ -58,18 +59,6 @@ export default function EntriesPage() {
     setShowForm(false);
     setEntryType('expense');
     reset();
-  };
-
-  /**
-   * 金額をフォーマットする
-   * @param amount 金額
-   * @returns フォーマットされた金額
-   */
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('ja-JP', {
-      style: 'currency',
-      currency: 'JPY',
-    }).format(amount);
   };
 
   return (

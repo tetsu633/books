@@ -1,78 +1,66 @@
 'use client';
 
-import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Card, CardHeader, CardBody } from '@/components/ui/Card';
-
-interface MonthlySummary {
-  month: string;
-  income: number;
-  expense: number;
-  balance: number;
-  categories: {
-    name: string;
-    amount: number;
-    percentage: number;
-  }[];
-}
+import { useSummary } from '../hooks/useSummary';
+import { formatCurrency } from '@/utils/currency';
 
 export default function SummaryPage() {
-  const [currentMonth, setCurrentMonth] = useState('2024-01');
+  const { summary: monthlySummary, currentMonth, changeMonth } = useSummary();
 
-  const monthlySummary: MonthlySummary = {
-    month: '2024年1月',
-    income: 300000,
-    expense: 185000,
-    balance: 115000,
-    categories: [
-      { name: '食費', amount: 45000, percentage: 24.3 },
-      { name: '家賃', amount: 70000, percentage: 37.8 },
-      { name: '光熱費', amount: 15000, percentage: 8.1 },
-      { name: '交通費', amount: 12000, percentage: 6.5 },
-      { name: '日用品', amount: 8000, percentage: 4.3 },
-      { name: 'その他', amount: 35000, percentage: 18.9 },
-    ],
+  // 数値かどうかをチェック
+  const isNum = (v: unknown): v is number => typeof v === 'number' && !Number.isNaN(v);
+
+  // 増減率を計算
+  const changeRate = (current: number, previous: number): number | undefined => {
+    if (previous === 0) return current === 0 ? 0 : undefined;
+    return ((current - previous) / previous) * 100;
   };
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('ja-JP', {
-      style: 'currency',
-      currency: 'JPY',
-    }).format(amount);
-  };
+  // 前月のデータがあるかどうかをチェック
+  const hasPrev =
+    isNum(monthlySummary?.previousMonthIncome) && isNum(monthlySummary?.previousMonthExpense);
 
-  const changeMonth = (direction: 'prev' | 'next') => {
-    const [year, month] = currentMonth.split('-').map(Number);
-    let newYear = year;
-    let newMonth = month;
+  // 今月のデータがあるかどうかをチェック
+  const hasCurr = isNum(monthlySummary?.totalIncome) && isNum(monthlySummary?.totalExpense);
 
-    if (direction === 'prev') {
-      newMonth--;
-      if (newMonth < 1) {
-        newMonth = 12;
-        newYear--;
-      }
-    } else {
-      newMonth++;
-      if (newMonth > 12) {
-        newMonth = 1;
-        newYear++;
-      }
-    }
+  // 収入の増減率を計算
+  const incomeChangeRate =
+    hasPrev && hasCurr
+      ? changeRate(monthlySummary!.totalIncome!, monthlySummary!.previousMonthIncome!)
+      : undefined;
 
-    setCurrentMonth(`${newYear}-${String(newMonth).padStart(2, '0')}`);
-  };
+  // 支出の増減率を計算
+  const expenseChangeRate =
+    hasPrev && hasCurr
+      ? changeRate(monthlySummary!.totalExpense!, monthlySummary!.previousMonthExpense!)
+      : undefined;
+
+  // 貯蓄率の増減率を計算
+  const financeChangeRate =
+    hasPrev && hasCurr
+      ? changeRate(
+          monthlySummary!.totalIncome! - monthlySummary!.totalExpense!,
+          monthlySummary!.previousMonthIncome! - monthlySummary!.previousMonthExpense!
+        )
+      : undefined;
+
+  // 増減率をフォーマット
+  const formatRate = (v: number | undefined) => (v === undefined ? '—' : `${v.toFixed(1)}%`);
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 mb-4">月次収支レポート</h1>
 
+        {/* 月次収支レポート */}
         <div className="flex items-center justify-between mb-6">
           <Button variant="outline" size="sm" onClick={() => changeMonth('prev')}>
             前月
           </Button>
-          <h2 className="text-xl font-semibold">{monthlySummary.month}</h2>
+          <h2 className="text-xl font-semibold">
+            {currentMonth.year}年{currentMonth.month}月
+          </h2>
           <Button variant="outline" size="sm" onClick={() => changeMonth('next')}>
             翌月
           </Button>
@@ -83,7 +71,7 @@ export default function SummaryPage() {
             <CardBody>
               <h3 className="text-sm text-gray-600 mb-2">総収入</h3>
               <p className="text-2xl font-bold text-green-600">
-                {formatCurrency(monthlySummary.income)}
+                {formatCurrency(monthlySummary?.totalIncome || 0)}
               </p>
             </CardBody>
           </Card>
@@ -92,7 +80,7 @@ export default function SummaryPage() {
             <CardBody>
               <h3 className="text-sm text-gray-600 mb-2">総支出</h3>
               <p className="text-2xl font-bold text-red-600">
-                {formatCurrency(monthlySummary.expense)}
+                {formatCurrency(monthlySummary?.totalExpense || 0)}
               </p>
             </CardBody>
           </Card>
@@ -102,34 +90,72 @@ export default function SummaryPage() {
               <h3 className="text-sm text-gray-600 mb-2">収支</h3>
               <p
                 className={`text-2xl font-bold ${
-                  monthlySummary.balance >= 0 ? 'text-blue-600' : 'text-red-600'
+                  (monthlySummary?.totalIncome || 0) - (monthlySummary?.totalExpense || 0) >= 0
+                    ? 'text-blue-600'
+                    : 'text-red-600'
                 }`}
               >
-                {formatCurrency(monthlySummary.balance)}
+                {formatCurrency(
+                  (monthlySummary?.totalIncome || 0) - (monthlySummary?.totalExpense || 0)
+                )}
               </p>
             </CardBody>
           </Card>
         </div>
 
+        {/* カテゴリ別支出 */}
         <Card>
           <CardHeader>
             <h3 className="text-lg font-semibold">カテゴリ別支出</h3>
           </CardHeader>
           <CardBody>
             <div className="space-y-4">
-              {monthlySummary.categories.map((category, index) => (
+              {monthlySummary?.categorySummary.length === 0 && (
+                <div className="text-center">データなし</div>
+              )}
+              {monthlySummary?.categorySummary.map((categorySummary, index) => (
+                <div key={index}>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium text-gray-700 w-1/3 text-left">
+                      {categorySummary.categoryName}
+                    </span>
+                    <span className="text-sm font-medium text-gray-700 w-1/3 text-center">
+                      {categorySummary.entryType === 'income' ? '収入' : '支出'}
+                    </span>
+                    <span className="text-sm font-medium text-gray-700 w-1/3 text-right">
+                      {formatCurrency(categorySummary.amount)}
+                    </span>
+                  </div>
+                </div>
+              ))}
+              {monthlySummary?.categorySummary.map((categorySummary, index) => (
                 <div key={index}>
                   <div className="flex justify-between items-center mb-1">
-                    <span className="text-sm font-medium text-gray-700">{category.name}</span>
+                    <span className="text-sm font-medium text-gray-700">
+                      {categorySummary.categoryName}
+                    </span>
                     <div className="text-sm text-gray-600">
-                      <span className="font-medium">{formatCurrency(category.amount)}</span>
-                      <span className="ml-2 text-gray-500">({category.percentage}%)</span>
+                      <span className="font-medium">{formatCurrency(categorySummary.amount)}</span>
+                      <span className="ml-2 text-gray-500">
+                        ({((categorySummary.amount / monthlySummary.totalExpense) * 100).toFixed(1)}
+                        %)
+                      </span>
                     </div>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
-                      className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${category.percentage}%` }}
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        categorySummary.entryType === 'income' ? 'bg-green-600' : 'bg-red-600'
+                      }`}
+                      style={{
+                        width: `${
+                          (categorySummary.amount /
+                            (categorySummary.entryType === 'income'
+                              ? monthlySummary.totalIncome
+                              : monthlySummary.totalExpense)) *
+                          100
+                        }%`,
+                      }}
                     />
                   </div>
                 </div>
@@ -139,6 +165,7 @@ export default function SummaryPage() {
         </Card>
 
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* 月別推移 */}
           <Card>
             <CardHeader>
               <h3 className="text-lg font-semibold">月別推移</h3>
@@ -150,6 +177,7 @@ export default function SummaryPage() {
             </CardBody>
           </Card>
 
+          {/* 前月比較 */}
           <Card>
             <CardHeader>
               <h3 className="text-lg font-semibold">前月比較</h3>
@@ -158,15 +186,15 @@ export default function SummaryPage() {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-600">収入</span>
-                  <span className="text-green-600 font-medium">+5.2%</span>
+                  <span className="text-green-600 font-medium">{formatRate(incomeChangeRate)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">支出</span>
-                  <span className="text-red-600 font-medium">-2.1%</span>
+                  <span className="text-red-600 font-medium">{formatRate(expenseChangeRate)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">貯蓄率</span>
-                  <span className="text-blue-600 font-medium">38.3%</span>
+                  <span className="text-blue-600 font-medium">{formatRate(financeChangeRate)}</span>
                 </div>
               </div>
             </CardBody>
