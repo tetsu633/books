@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { IconMenu2, IconX } from '@tabler/icons-react';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 
 export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -89,21 +89,27 @@ export const Header: React.FC = () => {
               </Link>
             </nav>
 
-            {/* 未登録ユーザーにのみ表示 */}
-            {!session && (
-              <div className="mt-4 pt-4 border-t border-gray-200 flex flex-col space-y-2">
-                <Link href="/login" onClick={() => setIsMenuOpen(false)}>
-                  <Button variant="outline" size="sm" className="w-full">
-                    ログイン
-                  </Button>
-                </Link>
-                <Link href="/signup" onClick={() => setIsMenuOpen(false)}>
-                  <Button variant="primary" size="sm" className="w-full">
-                    新規登録
-                  </Button>
-                </Link>
-              </div>
-            )}
+            {/* ログイン・新規登録・ログアウト */}
+            <div className="mt-4 pt-4 border-t border-gray-200 flex flex-col space-y-2">
+              {!session ? (
+                <>
+                  <Link href="/login" onClick={() => setIsMenuOpen(false)}>
+                    <Button variant="outline" size="sm" className="w-full">
+                      ログイン
+                    </Button>
+                  </Link>
+                  <Link href="/signup" onClick={() => setIsMenuOpen(false)}>
+                    <Button variant="primary" size="sm" className="w-full">
+                      新規登録
+                    </Button>
+                  </Link>
+                </>
+              ) : (
+                <Button variant="outline" size="sm" className="w-full" onClick={() => signOut()}>
+                  ログアウト
+                </Button>
+              )}
+            </div>
           </div>
         )}
       </div>
