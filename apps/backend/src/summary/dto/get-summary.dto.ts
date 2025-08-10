@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class GetSummaryDto {
+export class GetMonthlySummaryDto {
   @IsNotEmpty()
   @IsString()
   userId: string;

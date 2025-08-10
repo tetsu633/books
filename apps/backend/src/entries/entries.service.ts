@@ -4,7 +4,6 @@ import { CreateEntriesDto } from './dto/create-entries.dto';
 import { DeleteEntriesDto } from './dto/delete-entries.dto';
 import { GetEntriesDto } from './dto/get-entries.dto';
 import { UpdateEntriesDto } from './dto/update-entries.dto';
-import { GetSummaryDto } from './dto/get-summary.dto';
 
 @Injectable()
 export class EntriesService {
@@ -68,27 +67,6 @@ export class EntriesService {
     return await this.prismaService.entry.findMany({
       where: {
         userId,
-      },
-    });
-  }
-
-  /**
-   * 月次の集計を取得する
-   * @param param0 月次の集計の情報
-   * @returns 月次の集計
-   */
-  async getSummary({ userId, year, month }: GetSummaryDto) {
-    return await this.prismaService.entry.groupBy({
-      by: ['categoryName'],
-      where: {
-        userId,
-        date: {
-          gte: new Date(year, month, 1),
-          lte: new Date(year, month + 1, 0),
-        },
-      },
-      _sum: {
-        amount: true,
       },
     });
   }
