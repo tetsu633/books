@@ -11,7 +11,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // CORS設定
   app.enableCors({
-    origin: ['http://localhost:3000', 'https://books-frontend-mu-eight.vercel.app/'],
+    origin: ['http://localhost:3000', 'https://books-frontend-mu-eight.vercel.app'],
     credentials: true,
   });
 
