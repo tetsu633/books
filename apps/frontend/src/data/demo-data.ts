@@ -29,32 +29,32 @@ export const defaultCategories: Category[] = [
   {
     name: '給与',
     type: 'income',
-    color: 'bg-green-500',
+    color: 'green',
   },
   {
     name: '副業',
     type: 'income',
-    color: 'bg-green-400',
+    color: 'green',
   },
   {
     name: '食費',
     type: 'expense',
-    color: 'bg-red-500',
+    color: 'red',
   },
   {
     name: '交通費',
     type: 'expense',
-    color: 'bg-blue-500',
+    color: 'blue',
   },
   {
     name: '日用品',
     type: 'expense',
-    color: 'bg-yellow-500',
+    color: 'yellow',
   },
   {
     name: '光熱費',
     type: 'expense',
-    color: 'bg-purple-500',
+    color: 'purple',
   },
 ];
 
