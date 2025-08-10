@@ -4,9 +4,19 @@ import { Button } from '@/components/ui/Button';
 import { Card, CardHeader, CardBody } from '@/components/ui/Card';
 import { useSummary } from '../hooks/useSummary';
 import { formatCurrency } from '@/utils/currency';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from 'recharts';
 
 export default function SummaryPage() {
-  const { summary: monthlySummary, currentMonth, changeMonth } = useSummary();
+  const { monthlySummary, currentMonth, yearlySummary, changeMonth } = useSummary();
 
   // 数値かどうかをチェック
   const isNum = (v: unknown): v is number => typeof v === 'number' && !Number.isNaN(v);
@@ -171,9 +181,23 @@ export default function SummaryPage() {
               <h3 className="text-lg font-semibold">月別推移</h3>
             </CardHeader>
             <CardBody>
-              <div className="h-64 flex items-center justify-center text-gray-500">
-                グラフ表示エリア（実装予定）
-              </div>
+              <ResponsiveContainer width="100%" height={256}>
+                <LineChart data={yearlySummary || []}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+                  <YAxis
+                    tickFormatter={(value) => formatCurrency(Number(value))}
+                    tick={{ fontSize: 12 }}
+                  />
+                  <Tooltip
+                    formatter={(value) => formatCurrency(Number(value))}
+                    contentStyle={{ fontSize: 12 }}
+                  />
+                  <Legend wrapperStyle={{ fontSize: 12 }} />
+                  <Line type="monotone" dataKey="income" stroke="#82ca9d" name="収入" />
+                  <Line type="monotone" dataKey="expense" stroke="#ff8042" name="支出" />
+                </LineChart>
+              </ResponsiveContainer>
             </CardBody>
           </Card>
 

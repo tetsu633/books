@@ -16,3 +16,12 @@ export interface Summary {
   previousMonthIncome: number;
   previousMonthExpense: number;
 }
+
+/**
+ * 年次の集計
+ */
+export interface YearlySummary {
+  month: string;
+  income: number;
+  expense: number;
+}

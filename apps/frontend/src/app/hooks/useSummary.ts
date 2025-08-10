@@ -1,11 +1,12 @@
-import { defaultMonthlySummaryData } from '@/data/demo-data';
-import { getSummary } from '@/services/summary';
-import { Summary } from '@/types/summary';
+import { defaultMonthlySummaryData, demoYearlySummaryData } from '@/data/demo-data';
+import { getMonthlySummary, getYearlySummary } from '@/services/summary';
+import { Summary, YearlySummary } from '@/types/summary';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 export const useSummary = () => {
-  const [summary, setSummary] = useState<Summary | null>(null);
+  const [monthlySummary, setMonthlySummary] = useState<Summary | null>(null);
+  const [yearlySummary, setYearlySummary] = useState<YearlySummary[] | null>(null);
   const [currentMonth, setCurrentMonth] = useState<{ year: number; month: number }>({
     year: 2025,
     month: 8,
@@ -13,24 +14,46 @@ export const useSummary = () => {
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    fetchSummary(status);
+    fetchMonthlySummary(status);
+    fetchYearlySummary(status);
   }, [status, currentMonth]);
 
-  const fetchSummary = async (status: string) => {
+  const fetchYearlySummary = async (status: string) => {
     switch (status) {
       case 'authenticated':
         if (!session?.user.id) return;
-        const summary = await getSummary({
+        if (yearlySummary !== null && currentMonth.month !== 1 && currentMonth.month !== 12) return;
+        const summary = await getYearlySummary({
+          userId: session.user.id,
+          year: currentMonth.year,
+        });
+        setYearlySummary(summary);
+        break;
+
+      case 'unauthenticated':
+        setYearlySummary(demoYearlySummaryData);
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const fetchMonthlySummary = async (status: string) => {
+    switch (status) {
+      case 'authenticated':
+        if (!session?.user.id) return;
+        const summary = await getMonthlySummary({
           userId: session.user.id,
           year: currentMonth.year,
           month: currentMonth.month,
         });
-        setSummary(summary);
+        setMonthlySummary(summary);
         break;
 
       // 未認証時
       case 'unauthenticated':
-        setSummary(defaultMonthlySummaryData);
+        setMonthlySummary(defaultMonthlySummaryData);
         break;
 
       // default時は何もしない
@@ -60,5 +83,5 @@ export const useSummary = () => {
     setCurrentMonth({ year: newYear, month: newMonth });
   };
 
-  return { summary, currentMonth, changeMonth };
+  return { monthlySummary, currentMonth, yearlySummary, changeMonth };
 };
