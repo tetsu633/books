@@ -147,8 +147,19 @@ export default function SummaryPage() {
                     <div className="text-sm text-gray-600">
                       <span className="font-medium">{formatCurrency(categorySummary.amount)}</span>
                       <span className="ml-2 text-gray-500">
-                        ({((categorySummary.amount / monthlySummary.totalExpense) * 100).toFixed(1)}
-                        %)
+                        {categorySummary.entryType === 'income' ? (
+                          <span className="text-green-600">
+                            {formatRate(
+                              (categorySummary.amount / monthlySummary.totalIncome) * 100
+                            )}
+                          </span>
+                        ) : (
+                          <span className="text-red-600">
+                            {formatRate(
+                              (categorySummary.amount / monthlySummary.totalExpense) * 100
+                            )}
+                          </span>
+                        )}
                       </span>
                     </div>
                   </div>
