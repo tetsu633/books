@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { DeleteCategoryDto } from './dto/delete-category.dto';
-import { GetCategoriesDto } from './dto/get-category.dto';
 
 @Injectable()
 export class CategoryService {
@@ -14,12 +12,13 @@ export class CategoryService {
    * @param param0 カテゴリの情報
    * @returns 作成したカテゴリ
    */
-  async createCategory({ userId, name, type }: CreateCategoryDto) {
+  async createCategory({ userId, name, type, color }: CreateCategoryDto) {
     return await this.prismaService.category.create({
       data: {
         userId,
         name,
         type,
+        color,
       },
     });
   }
@@ -29,7 +28,7 @@ export class CategoryService {
    * @param param0 カテゴリの情報
    * @returns 更新したカテゴリ
    */
-  async updateCategory({ id, name, type }: UpdateCategoryDto) {
+  async updateCategory({ id, name, type, color }: UpdateCategoryDto & { id: number }) {
     return await this.prismaService.category.update({
       where: {
         id,
@@ -37,6 +36,7 @@ export class CategoryService {
       data: {
         name,
         type,
+        color,
       },
     });
   }
@@ -46,7 +46,7 @@ export class CategoryService {
    * @param param0 カテゴリの情報
    * @returns 削除したカテゴリ
    */
-  async deleteCategory({ id }: DeleteCategoryDto) {
+  async deleteCategory({ id }: { id: number }) {
     return await this.prismaService.category.delete({
       where: {
         id,
@@ -59,7 +59,7 @@ export class CategoryService {
    * @param param0 カテゴリの情報
    * @returns 取得したカテゴリ
    */
-  async getCategories({ userId }: GetCategoriesDto) {
+  async getCategories({ userId }: { userId: string }) {
     return await this.prismaService.category.findMany({
       where: {
         userId,
