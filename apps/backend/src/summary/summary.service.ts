@@ -1,10 +1,51 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { GetMonthlySummaryDto } from './dto/get-summary.dto';
+import { GetMonthlySummaryDto } from './dto/get-monthly-summary.dto';
+import { GetYearlySummaryDto } from './dto/get-yearly-summary.dto';
 
 @Injectable()
 export class SummaryService {
   constructor(private readonly prismaService: PrismaService) {}
+
+  /**
+   * 年次の集計を取得する
+   * @param param0 年次の集計の情報
+   * @returns 年次の集計
+   */
+  async getYearlySummary({ userId, year }: GetYearlySummaryDto) {
+    const entries = await this.prismaService.entry.findMany({
+      where: {
+        userId,
+        date: {
+          gte: new Date(year, 0, 1),
+          lte: new Date(year, 11, 31),
+        },
+      },
+      select: {
+        date: true,
+        entryType: true,
+        amount: true,
+      },
+    });
+
+    const monthlyData = Array.from({ length: 12 }, (_, i) => ({
+      month: i + 1,
+      income: 0,
+      expense: 0,
+    }));
+
+    // 月別の収入・支出を計算
+    entries.forEach((entry) => {
+      const month = new Date(entry.date).getMonth();
+      if (entry.entryType === 'income') {
+        monthlyData[month].income += entry.amount;
+      } else {
+        monthlyData[month].expense += entry.amount;
+      }
+    });
+
+    return monthlyData;
+  }
 
   /**
    * 月次の集計を取得する
