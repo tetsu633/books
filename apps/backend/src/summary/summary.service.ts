@@ -17,8 +17,8 @@ export class SummaryService {
       where: {
         userId,
         date: {
-          gte: new Date(year, 0, 1),
-          lte: new Date(year, 11, 31),
+          gte: new Date(Date.UTC(year, 0, 1, 0, 0, 0)),
+          lt: new Date(Date.UTC(year + 1, 0, 1, 0, 0, 0)),
         },
       },
       select: {
@@ -59,8 +59,8 @@ export class SummaryService {
       where: {
         userId,
         date: {
-          gte: new Date(year, month - 1, 1),
-          lte: new Date(year, month, 0),
+          gte: new Date(Date.UTC(year, month - 1, 1, 0, 0, 0)),
+          lt: new Date(Date.UTC(year, month, 1, 0, 0, 0)),
         },
       },
       _sum: {
@@ -74,8 +74,8 @@ export class SummaryService {
       where: {
         userId,
         date: {
-          gte: new Date(year, month - 1, 1),
-          lte: new Date(year, month, 0),
+          gte: new Date(Date.UTC(year, month - 1, 1, 0, 0, 0)),
+          lt: new Date(Date.UTC(year, month, 1, 0, 0, 0)),
         },
       },
       _sum: {
@@ -128,8 +128,8 @@ export class SummaryService {
       where: {
         userId,
         date: {
-          gte: new Date(previousYear, previousMonth - 1, 1),
-          lte: new Date(previousYear, previousMonth, 0),
+          gte: new Date(Date.UTC(previousYear, previousMonth - 1, 1, 0, 0, 0)),
+          lt: new Date(Date.UTC(previousYear, previousMonth, 1, 0, 0, 0)),
         },
       },
       _sum: {

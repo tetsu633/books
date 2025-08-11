@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class GetMonthlySummaryDto {
@@ -6,10 +7,12 @@ export class GetMonthlySummaryDto {
   userId: string;
 
   @IsNotEmpty()
+  @Type(() => Number)
   @IsNumber()
   year: number;
 
   @IsNotEmpty()
+  @Type(() => Number)
   @IsNumber()
   month: number;
 
