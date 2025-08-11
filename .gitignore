@@ -57,3 +57,10 @@ test-output
 
 # Build info
 tsconfig.tsbuildinfo
+
+# PWA files
+apps/frontend/public/sw.js
+apps/frontend/public/workbox-*.js
+apps/frontend/public/worker-*.js
+apps/frontend/public/sw.js.map
+apps/frontend/public/workbox-*.js.map

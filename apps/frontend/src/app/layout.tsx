@@ -12,9 +12,19 @@ export const metadata: Metadata = {
     'シンプルで使いやすい家計簿アプリ。収支管理、カテゴリ分類、月次レポートで賢く資産管理。',
   keywords: ['家計簿', '資産管理', '収支管理', 'お金管理', '節約', '貯金'],
   authors: [{ name: 'Tetsu Nishimura' }],
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: '家計簿アプリ',
+  },
+  formatDetection: {
+    telephone: false,
+  },
   openGraph: {
     title: '家計簿アプリ - シンプルな資産管理',
-    description: 'シンプルで使いやすい家計簿アプリ。収支管理、カテゴリ分類、月次レポートで賢く資産管理。',
+    description:
+      'シンプルで使いやすい家計簿アプリ。収支管理、カテゴリ分類、月次レポートで賢く資産管理。',
     url: 'https://books-frontend-mu-eight.vercel.app',
     siteName: '家計簿アプリ',
     images: [
@@ -31,7 +41,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: '家計簿アプリ - シンプルな資産管理',
-    description: 'シンプルで使いやすい家計簿アプリ。収支管理、カテゴリ分類、月次レポートで賢く資産管理。',
+    description:
+      'シンプルで使いやすい家計簿アプリ。収支管理、カテゴリ分類、月次レポートで賢く資産管理。',
     images: ['https://books-frontend-mu-eight.vercel.app/opengraph-image.png'],
   },
   robots: {
