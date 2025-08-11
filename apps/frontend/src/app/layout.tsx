@@ -3,11 +3,12 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { MobileNav } from '@/components/layout/MobileNav';
 import { Providers } from './providers';
+import { APP_NAME } from '@/constants';
 
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: '家計簿アプリ - シンプルな資産管理',
+  title: `${APP_NAME} - シンプルな資産管理`,
   description:
     'シンプルで使いやすい家計簿アプリ。収支管理、カテゴリ分類、月次レポートで賢く資産管理。',
   keywords: ['家計簿', '資産管理', '収支管理', 'お金管理', '節約', '貯金'],
@@ -16,23 +17,23 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: '家計簿アプリ',
+    title: APP_NAME,
   },
   formatDetection: {
     telephone: false,
   },
   openGraph: {
-    title: '家計簿アプリ - シンプルな資産管理',
+    title: `${APP_NAME} - シンプルな資産管理`,
     description:
       'シンプルで使いやすい家計簿アプリ。収支管理、カテゴリ分類、月次レポートで賢く資産管理。',
     url: 'https://books-frontend-mu-eight.vercel.app',
-    siteName: '家計簿アプリ',
+    siteName: APP_NAME,
     images: [
       {
         url: 'https://books-frontend-mu-eight.vercel.app/opengraph-image.png',
         width: 1200,
         height: 630,
-        alt: '家計簿アプリ - シンプルな資産管理',
+        alt: `${APP_NAME} - シンプルな資産管理`,
       },
     ],
     locale: 'ja_JP',
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '家計簿アプリ - シンプルな資産管理',
+    title: `${APP_NAME} - シンプルな資産管理`,
     description:
       'シンプルで使いやすい家計簿アプリ。収支管理、カテゴリ分類、月次レポートで賢く資産管理。',
     images: ['https://books-frontend-mu-eight.vercel.app/opengraph-image.png'],

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { IconMenu2, IconX } from '@tabler/icons-react';
 import { signOut, useSession } from 'next-auth/react';
+import { APP_NAME } from '@/constants';
 
 export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,8 +20,8 @@ export const Header: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <Link href="/" className="text-xl font-bold text-gray-900">
-              家計簿アプリ
+            <Link href="/" className="text-lg font-extrabold text-gray-900">
+              家計簿アプリ {APP_NAME}
             </Link>
           </div>
 
