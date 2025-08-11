@@ -50,7 +50,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="py-12 md:py-16 bg-gray-50 rounded-2xl my-12">
+        <section className="py-12 md:py-16 bg-gray-50 rounded-2xl my-8">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">まずは体験してみませんか？</h2>
             <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">

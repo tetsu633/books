@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { IconCategory, IconChartBar, IconCoin } from '@tabler/icons-react';
+import { useSession } from 'next-auth/react';
 
 interface NavItem {
   href: string;
@@ -13,6 +14,12 @@ interface NavItem {
 
 export const MobileNav: React.FC = () => {
   const pathname = usePathname();
+  const session = useSession();
+
+  // 未登録ユーザーには表示しない
+  if (!session.data?.user) {
+    return null;
+  }
 
   const navItems: NavItem[] = [
     {
