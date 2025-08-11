@@ -27,31 +27,37 @@ export const demoData: Entry[] = [
 // デフォルトカテゴリ
 export const defaultCategories: Category[] = [
   {
+    id: 1,
     name: '給与',
     type: 'income',
     color: 'green',
   },
   {
+    id: 2,
     name: '副業',
     type: 'income',
     color: 'green',
   },
   {
+    id: 3,
     name: '食費',
     type: 'expense',
     color: 'red',
   },
   {
+    id: 4,
     name: '交通費',
     type: 'expense',
     color: 'blue',
   },
   {
+    id: 5,
     name: '日用品',
     type: 'expense',
     color: 'yellow',
   },
   {
+    id: 6,
     name: '光熱費',
     type: 'expense',
     color: 'purple',

@@ -7,6 +7,7 @@ import { useEntries } from '../hooks/useEntries';
 import { useForm } from 'react-hook-form';
 import { formatCurrency } from '@/utils/currency';
 import { IconTrash } from '@tabler/icons-react';
+import { useCategories } from '../hooks/useCategories';
 
 interface IEntryForm {
   userId: string;
@@ -18,6 +19,7 @@ interface IEntryForm {
 
 export default function EntriesPage() {
   const { entries, createEntry, deleteEntry } = useEntries();
+  const { categories } = useCategories();
   const [showForm, setShowForm] = useState(false);
   const [entryType, setEntryType] = useState<'income' | 'expense'>('expense');
   const [filterType, setFilterType] = useState<'all' | 'income' | 'expense'>('all');
@@ -147,21 +149,21 @@ export default function EntriesPage() {
                       {...register('categoryName')}
                     >
                       <option value="">選択してください</option>
-                      {entryType === 'income' ? (
-                        <>
-                          <option value="給与">給与</option>
-                          <option value="副業">副業</option>
-                          <option value="その他">その他</option>
-                        </>
-                      ) : (
-                        <>
-                          <option value="食費">食費</option>
-                          <option value="交通費">交通費</option>
-                          <option value="日用品">日用品</option>
-                          <option value="光熱費">光熱費</option>
-                          <option value="その他">その他</option>
-                        </>
-                      )}
+                      {entryType === 'income'
+                        ? categories
+                            .filter((category) => category.type === 'income')
+                            .map((category) => (
+                              <option key={category.id} value={category.name}>
+                                {category.name}
+                              </option>
+                            ))
+                        : categories
+                            .filter((category) => category.type === 'expense')
+                            .map((category) => (
+                              <option key={category.id} value={category.name}>
+                                {category.name}
+                              </option>
+                            ))}
                     </select>
                   </div>
 
