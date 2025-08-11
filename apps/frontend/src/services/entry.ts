@@ -33,8 +33,22 @@ export const createEntry = async (entry: {
  * 入出金情報を取得する
  * @returns 入出金情報
  */
-export const getEntries = async ({ userId }: { userId: string }): Promise<Entry[]> => {
+export const getEntries = async ({
+  userId,
+  year,
+  month,
+}: {
+  userId: string;
+  year?: number;
+  month?: number;
+}): Promise<Entry[]> => {
   const params = new URLSearchParams({ userId });
+  if (year) {
+    params.set('year', year.toString());
+  }
+  if (month) {
+    params.set('month', month.toString());
+  }
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/entries?${params}`, {
     method: 'GET',
     headers: {

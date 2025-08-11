@@ -18,7 +18,10 @@ interface IEntryForm {
 }
 
 export default function EntriesPage() {
-  const { entries, createEntry, deleteEntry } = useEntries();
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1;
+  const { entries, createEntry, deleteEntry } = useEntries(year, month);
   const { categories } = useCategories();
   const [showForm, setShowForm] = useState(false);
   const [entryType, setEntryType] = useState<'income' | 'expense'>('expense');
@@ -64,10 +67,36 @@ export default function EntriesPage() {
     reset();
   };
 
+  /**
+   * 前月へ移動
+   */
+  const handlePreviousMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1));
+  };
+
+  /**
+   * 次月へ移動
+   */
+  const handleNextMonth = () => {
+    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1));
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 mb-4">入出金管理</h1>
+
+        <div className="flex justify-between items-center mb-4">
+          <Button onClick={handlePreviousMonth} variant="outline" size="sm">
+            ←
+          </Button>
+          <h2 className="text-lg font-semibold text-gray-800">
+            {year}年{month}月
+          </h2>
+          <Button onClick={handleNextMonth} variant="outline" size="sm">
+            →
+          </Button>
+        </div>
 
         <div className="flex justify-between items-center mb-4">
           <div className="flex gap-2">
@@ -208,6 +237,7 @@ export default function EntriesPage() {
               if (filterType === 'expense') return entry.entryType === 'expense';
               return false;
             })
+            .slice(0, 5)
             .map((entry, index) => (
               <Card key={`${entry.categoryName}-${index}`} variant="bordered">
                 <CardBody>

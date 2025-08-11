@@ -62,10 +62,22 @@ export class EntriesService {
    * 入出金を取得する
    * @returns 入出金
    */
-  async getEntries({ userId }: GetEntriesDto) {
+  async getEntries({ userId, year, month }: GetEntriesDto) {
     return await this.prismaService.entry.findMany({
       where: {
         userId,
+        // 年月が指定されている場合は、その年月のデータを取得する
+        ...(year && month
+          ? {
+              date: {
+                gte: new Date(Date.UTC(year, month - 1, 1, 0, 0, 0)),
+                lt: new Date(Date.UTC(year, month, 1, 0, 0, 0)),
+              },
+            }
+          : {}),
+      },
+      orderBy: {
+        date: 'desc',
       },
     });
   }

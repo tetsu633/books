@@ -42,6 +42,8 @@ export class EntriesController {
   async getEntries(@Query() getEntriesDto: GetEntriesDto) {
     return await this.entriesService.getEntries({
       userId: getEntriesDto.userId,
+      year: getEntriesDto.year,
+      month: getEntriesDto.month,
     });
   }
 }

@@ -13,9 +13,11 @@ interface EntryWithoutId extends Omit<Entry, 'userId'> {}
 
 /**
  * 入出金情報を取得する
+ * @param year 年（オプション）
+ * @param month 月（オプション）
  * @returns 入出金情報
  */
-export const useEntries = () => {
+export const useEntries = (year?: number, month?: number) => {
   const [entries, setEntries] = useState<EntryWithoutId[]>([]);
   const { data: session, status } = useSession();
 
@@ -23,20 +25,28 @@ export const useEntries = () => {
    * 入出金情報を取得する
    */
   useEffect(() => {
-    initEntries(status);
-  }, [status]);
+    initEntries(status, year, month);
+  }, [status, year, month]);
 
   /**
    * 入出金情報を取得する
    * @param status セッションの状態
+   * @param year 年（オプション）
+   * @param month 月（オプション）
    */
-  const initEntries = async (status: string) => {
+  const initEntries = async (status: string, year?: number, month?: number) => {
     // セッションの状態に応じて入出金情報を取得する
     switch (status) {
       // 認証時
       case 'authenticated':
         if (!session?.user.id) return;
-        const entries = await getEntries({ userId: session?.user.id });
+
+        // 指定された年月、または今月の入出金情報を取得する
+        const currentDate = new Date();
+        const targetYear = year || currentDate.getFullYear();
+        const targetMonth = month || currentDate.getMonth() + 1;
+        const entries = await getEntries({ userId: session?.user.id, year: targetYear, month: targetMonth });
+
         setEntries(
           entries.map((entry) => ({
             ...entry,
