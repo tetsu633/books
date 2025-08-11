@@ -28,6 +28,9 @@ export default function LoginPage() {
     }
 
     router.push('/entries');
+
+    // ログイン後はページをリロードする
+    router.refresh();
   };
 
   return (

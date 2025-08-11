@@ -35,6 +35,9 @@ export default function SignupPage() {
     }
 
     router.push('/entries');
+
+    // ログイン後はページをリロードする
+    router.refresh();
   };
 
   return (
