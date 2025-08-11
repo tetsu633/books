@@ -50,6 +50,34 @@ export default function LandingPage() {
           </div>
         </section>
 
+        <section className="py-12 md:py-16 bg-gray-50 rounded-2xl my-12">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">まずは体験してみませんか？</h2>
+            <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+              登録不要でサンプルデータを使って実際の使用感をお試しいただけます。
+              <br />
+              収支の記録やカテゴリ管理など、すべての機能を体験できます。
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/entries">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                  <IconCoin className="w-5 h-5 mr-2" />
+                  収支管理を体験
+                </Button>
+              </Link>
+              <Link href="/categories">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                  <IconCategory className="w-5 h-5 mr-2" />
+                  カテゴリ管理を体験
+                </Button>
+              </Link>
+            </div>
+            <p className="text-sm text-gray-500 mt-4">
+              ※サンプルデータは保存されません。本格的に使い始めるには無料登録をお願いします。
+            </p>
+          </div>
+        </section>
+
         <section className="py-12 md:py-16">
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">主な機能</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
