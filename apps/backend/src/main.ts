@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 
@@ -14,6 +14,13 @@ async function bootstrap() {
     origin: ['http://localhost:3000', 'https://books-frontend-mu-eight.vercel.app'],
     credentials: true,
   });
+
+  // ValidationPipeをグローバルに設定
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    })
+  );
 
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
