@@ -4,8 +4,34 @@ import { IconCategory, IconChartBar, IconCoin } from '@tabler/icons-react';
 import Link from 'next/link';
 
 export default function LandingPage() {
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: '家計簿アプリ',
+    applicationCategory: 'FinanceApplication',
+    operatingSystem: 'Web',
+    description: 'シンプルで使いやすい家計簿アプリ。収支管理、カテゴリ分類、月次レポートで賢く資産管理。',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'JPY',
+    },
+    featureList: [
+      '収支管理',
+      'カテゴリ別分類',
+      '月次レポート',
+      'シンプルなUI',
+      '無料で利用可能',
+    ],
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <div className="container mx-auto px-4 py-8">
       <section className="text-center py-12 md:py-20">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
           シンプルで使いやすい
@@ -76,5 +102,6 @@ export default function LandingPage() {
         </div>
       </section>
     </div>
+    </>
   );
 }
