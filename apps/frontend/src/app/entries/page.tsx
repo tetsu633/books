@@ -10,6 +10,7 @@ import { IconTrash } from '@tabler/icons-react';
 import { useCategories } from '../hooks/useCategories';
 import { DemoDataBanner } from '@/components/DemoDataBanner';
 import { TutorialProvider } from '@/components/TutorialProvider';
+import { categoryColors } from '@/types/category';
 
 interface IEntryForm {
   userId: string;
@@ -252,7 +253,10 @@ export default function EntriesPage() {
                       <div className="flex items-center gap-4">
                         <div
                           className={`w-2 h-12 rounded ${
-                            entry.entryType === 'income' ? 'bg-green-500' : 'bg-red-500'
+                            categoryColors[
+                              categories.find((cat) => cat.name === entry.categoryName)?.color ||
+                                'gray'
+                            ]
                           }`}
                         />
                         <div>

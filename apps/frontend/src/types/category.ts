@@ -2,7 +2,7 @@ export interface Category {
   id?: number;
   name: string;
   type: string;
-  color: keyof typeof colors;
+  color: keyof typeof categoryColors;
 }
 
 const styles = [
@@ -16,7 +16,7 @@ const styles = [
   'bg-gray-500',
 ];
 
-export const colors: Record<string, (typeof styles)[number]> = {
+export const categoryColors: Record<string, (typeof styles)[number]> = {
   red: 'bg-red-500',
   blue: 'bg-blue-500',
   green: 'bg-green-500',

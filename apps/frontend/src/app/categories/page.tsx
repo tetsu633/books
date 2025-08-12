@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Card, CardBody } from '@/components/ui/Card';
-import { Category, colors } from '@/types/category';
+import { Category, categoryColors } from '@/types/category';
 import { useCategories } from '../hooks/useCategories';
 import { useForm } from 'react-hook-form';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
@@ -13,7 +13,7 @@ interface ICategoryForm {
   userId: string;
   name: string;
   type: 'income' | 'expense';
-  color: keyof typeof colors;
+  color: keyof typeof categoryColors;
 }
 
 export default function CategoriesPage() {
@@ -34,7 +34,7 @@ export default function CategoriesPage() {
   const [showForm, setShowForm] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [categoryType, setCategoryType] = useState<'income' | 'expense'>('expense');
-  const [categoryColor, setCategoryColor] = useState<keyof typeof colors>('blue');
+  const [categoryColor, setCategoryColor] = useState<keyof typeof categoryColors>('blue');
 
   /**
    * カテゴリを追加または更新する
@@ -164,14 +164,14 @@ export default function CategoriesPage() {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">カラー</label>
                     <div className="flex gap-2 flex-wrap">
-                      {Object.keys(colors).map((color) => (
+                      {Object.keys(categoryColors).map((color) => (
                         <button
                           key={color}
                           type="button"
                           onClick={() => {
                             setCategoryColor(color);
                           }}
-                          className={`w-10 h-10 rounded-lg ${colors[color]} ${
+                          className={`w-10 h-10 rounded-lg ${categoryColors[color]} ${
                             categoryColor === color ? 'ring-2 ring-offset-2 ring-gray-900' : ''
                           }`}
                         />
@@ -199,7 +199,7 @@ export default function CategoriesPage() {
                   <Card key={`${category.name}-${index}`} variant="bordered">
                     <CardBody className="flex items-center justify-between py-3">
                       <div className="flex items-center gap-3">
-                        <div className={`w-4 h-4 rounded ${colors[category.color]}`} />
+                        <div className={`w-4 h-4 rounded ${categoryColors[category.color]}`} />
                         <span className="font-medium">{category.name}</span>
                       </div>
                       <div className="flex gap-4">
@@ -238,7 +238,7 @@ export default function CategoriesPage() {
                   <Card key={`${category.name}-${index}`} variant="bordered">
                     <CardBody className="flex items-center justify-between py-3">
                       <div className="flex items-center gap-3">
-                        <div className={`w-4 h-4 rounded ${colors[category.color]}`} />
+                        <div className={`w-4 h-4 rounded ${categoryColors[category.color]}`} />
                         <span className="font-medium">{category.name}</span>
                       </div>
                       <div className="flex gap-4">
