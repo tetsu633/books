@@ -1,110 +1,167 @@
-# Books
+# CashMemo - シンプルな資産管理アプリ
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+<a alt="CashMemo logo" href="https://books-frontend-mu-eight.vercel.app" target="_blank" rel="noreferrer"><img src="https://books-frontend-mu-eight.vercel.app/icons/icon-72x72.png" width="45"></a>
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+家計簿機能を持つシンプルな資産管理PWAアプリケーションです。収入・支出の記録、カテゴリ管理、月別・年別のサマリー表示が可能です。
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+## 🚀 技術スタック
 
-## Generate a library
+### Frontend (Next.js PWA)
 
-```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
-```
+- **Framework**: Next.js 15.2.4
+- **UI**: React 19.0.0, TypeScript
+- **スタイリング**: Tailwind CSS
+- **認証**: NextAuth.js
+- **PWA**: next-pwa
+- **フォーム**: react-hook-form
+- **グラフ**: recharts
+- **アイコン**: @tabler/icons-react
 
-## Run tasks
+### Backend (NestJS API)
 
-To build the library use:
+- **Framework**: NestJS 11.0.0
+- **言語**: TypeScript
+- **ORM**: Prisma 6.11.1
+- **データベース**: PostgreSQL
+- **バリデーション**: class-validator, class-transformer
 
-```sh
-npx nx build pkg1
-```
-
-To run any task with Nx use:
-
-```sh
-npx nx <target> <project-name>
-```
-
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Versioning and releasing
-
-To version and release the library use
+## 📁 プロジェクト構成
 
 ```
-npx nx release
+books/
+├── apps/
+│   ├── frontend/          # Next.js PWAアプリケーション
+│   └── backend/           # NestJS APIサーバー
+├── libs/
+│   ├── prisma/           # Prismaクライアント共有ライブラリ
+│   └── shared-types/     # 型定義共有ライブラリ
+├── nx.json               # Nx設定
+├── package.json          # ルートパッケージ設定
+├── nixpacks.toml         # バックエンドデプロイ設定
+└── vercel.json           # フロントエンドデプロイ設定
 ```
 
-Pass `--dry-run` to see what would happen without actually releasing the library.
+## 🛠 セットアップ
 
-[Learn more about Nx release &raquo;](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### 前提条件
 
-## Keep TypeScript project references up to date
+- Node.js 20.x
+- PostgreSQL
+- npm または yarn
 
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
+### インストール
 
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
+```bash
+# 依存関係のインストール
+npm install
 
-```sh
-npx nx sync
+# Prismaクライアントの生成
+npm run prisma:generate
+
+# データベースのセットアップ
+npm run prisma:push
 ```
 
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
+### 環境変数
 
-```sh
-npx nx sync:check
+`.env`ファイルを作成し、以下の環境変数を設定してください：
+
+```env
+# データベース
+DATABASE_URL="postgresql://user:password@localhost:5432/cashmemo"
+DIRECT_URL="postgresql://user:password@localhost:5432/cashmemo"
+
+# NextAuth
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-secret-key"
 ```
 
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
+## 💻 開発
 
-## Set up CI!
+### 開発サーバーの起動
 
-### Step 1
+```bash
+# Frontend (localhost:4200)
+npx nx dev frontend
 
-To connect to Nx Cloud, run the following command:
+# Backend (localhost:3000)
+npx nx serve backend
 
-```sh
-npx nx connect
+# 両方同時に起動
+npx nx run-many --target=serve --projects=frontend,backend
 ```
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+### ビルド
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```bash
+# Frontend
+npx nx build frontend
 
-### Step 2
+# Backend
+npx nx build backend
 
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
+# 全てビルド
+npx nx run-many --target=build --all
 ```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### リント
 
-## Install Nx Console
+```bash
+# リント実行
+npx nx lint frontend
+npx nx lint backend
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+# フォーマット
+npm run format
+```
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 📊 主な機能
 
-## Useful links
+### API エンドポイント
 
-Learn more:
+- **認証**: `/auth` - ユーザー登録、ログイン
+- **カテゴリ管理**: `/category` - カテゴリのCRUD操作
+- **入出金記録**: `/entries` - 収入・支出の記録管理
+- **サマリー**: `/summary` - 月別・年別の集計データ
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+### データモデル
 
-And join the Nx community:
+- **User**: ユーザー情報（ID、名前、メール、パスワード）
+- **Category**: カテゴリ（名前、タイプ[収入/支出]、色、ユーザー紐付け）
+- **Entry**: 入出金記録（金額、日付、メモ、タイプ、カテゴリ、ユーザー紐付け）
 
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## 🚀 デプロイ
+
+### Frontend (Vercel)
+
+```bash
+# Vercelへのデプロイ
+vercel
+```
+
+### Backend (Railway/Render等)
+
+Nixpacksを使用してデプロイ可能です。`nixpacks.toml`に設定が含まれています。
+
+## 📝 その他のコマンド
+
+```bash
+# Prismaマイグレーション
+npm run prisma:migrate
+
+# Prismaリセット
+npm run prisma:reset
+
+# 依存関係グラフの表示
+npx nx graph
+
+# 影響を受けるプロジェクトの確認
+npx nx affected:graph
+```
+
+## 📚 参考リンク
+
+- [Nx Documentation](https://nx.dev)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [NestJS Documentation](https://nestjs.com)
+- [Prisma Documentation](https://www.prisma.io/docs)
