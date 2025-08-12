@@ -151,7 +151,7 @@ export const Tutorial: React.FC<TutorialProps> = ({ onComplete }) => {
               </p>
               <button
                 onClick={onComplete}
-                className="px-8 py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center gap-2"
+                className="px-8 py-3 bg-green-500 text-white rounded-lg font-semibold hover:bg-green-600 transition-colors flex items-center gap-2 animate-bounce"
               >
                 <IconRocket size={20} />
                 始める

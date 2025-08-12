@@ -28,16 +28,16 @@ export const Header: React.FC = () => {
           {/* 登録済みユーザーにのみ表示 */}
           {session?.user && (
             <nav className="hidden md:flex items-center space-x-6">
-              <Link href="/entries" className="text-gray-700 hover:text-gray-900 transition-colors">
+              <Link href="/entries" className="text-gray-600 hover:text-gray-900 transition-colors">
                 入出金
               </Link>
               <Link
                 href="/categories"
-                className="text-gray-700 hover:text-gray-900 transition-colors"
+                className="text-gray-600 hover:text-gray-900 transition-colors"
               >
                 カテゴリ
               </Link>
-              <Link href="/summary" className="text-gray-700 hover:text-gray-900 transition-colors">
+              <Link href="/summary" className="text-gray-600 hover:text-gray-900 transition-colors">
                 月次収支
               </Link>
             </nav>

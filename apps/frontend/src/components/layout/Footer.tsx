@@ -50,9 +50,12 @@ export const Footer: React.FC = () => {
             <h4 className="text-md font-semibold text-gray-900 mb-4">サポート</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-600 hover:text-gray-900 text-sm transition-colors">
+                <Link
+                  href={'/tutorial'}
+                  className="text-gray-600 hover:text-gray-900 text-sm transition-colors"
+                >
                   使い方ガイド
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="#" className="text-gray-600 hover:text-gray-900 text-sm transition-colors">
