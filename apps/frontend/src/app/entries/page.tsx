@@ -9,6 +9,7 @@ import { formatCurrency } from '@/utils/currency';
 import { IconTrash } from '@tabler/icons-react';
 import { useCategories } from '../hooks/useCategories';
 import { DemoDataBanner } from '@/components/DemoDataBanner';
+import { TutorialProvider } from '@/components/TutorialProvider';
 
 interface IEntryForm {
   userId: string;
@@ -84,6 +85,7 @@ export default function EntriesPage() {
 
   return (
     <>
+      <TutorialProvider />
       <DemoDataBanner />
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6">
