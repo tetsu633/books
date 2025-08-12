@@ -13,6 +13,8 @@ import {
   IconCheck,
   IconChevronRight,
   IconChevronLeft,
+  IconDeviceMobile,
+  IconDownload,
 } from '@tabler/icons-react';
 
 interface TutorialProps {
@@ -20,6 +22,17 @@ interface TutorialProps {
 }
 
 export const Tutorial: React.FC<TutorialProps> = ({ onComplete }) => {
+  const SkipButton = () => {
+    return (
+      <button
+        onClick={onComplete}
+        className="absolute bottom-0 right-3 z-10 text-gray-400 hover:text-gray-600 font-bold transition-colors"
+      >
+        スキップする
+      </button>
+    );
+  };
+
   return (
     <div className="fixed inset-0 z-50 bg-white flex items-center justify-center">
       <div className="relative w-full max-w-4xl h-[600px] px-4">
@@ -52,6 +65,7 @@ export const Tutorial: React.FC<TutorialProps> = ({ onComplete }) => {
                 このチュートリアルで基本的な使い方をご紹介します。
               </p>
             </div>
+            <SkipButton />
           </SwiperSlide>
 
           {/* カテゴリ管理の説明 */}
@@ -81,6 +95,7 @@ export const Tutorial: React.FC<TutorialProps> = ({ onComplete }) => {
                 </div>
               </div>
             </div>
+            <SkipButton />
           </SwiperSlide>
 
           {/* 収支入力の説明 */}
@@ -108,6 +123,7 @@ export const Tutorial: React.FC<TutorialProps> = ({ onComplete }) => {
                 </p>
               </div>
             </div>
+            <SkipButton />
           </SwiperSlide>
 
           {/* グラフ表示の説明 */}
@@ -137,6 +153,43 @@ export const Tutorial: React.FC<TutorialProps> = ({ onComplete }) => {
             </div>
           </SwiperSlide>
 
+          {/* PWAインストールの説明 */}
+          <SwiperSlide>
+            <div className="flex flex-col items-center justify-center h-full text-center px-8">
+              <div className="mb-8">
+                <IconDeviceMobile size={80} className="text-indigo-500 mx-auto" />
+              </div>
+              <h2 className="text-3xl font-bold mb-4 text-gray-800">アプリとして使える！</h2>
+              <p className="text-gray-600 max-w-md mb-6">
+                ホーム画面に追加すると、通常のアプリのように素早くアクセスできます。
+              </p>
+              <div className="text-left max-w-md grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-blue-50 p-4 rounded-lg">
+                  <h3 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
+                    <IconDownload size={20} />
+                    iPhoneの場合
+                  </h3>
+                  <ol className="text-sm text-blue-700 space-y-1">
+                    <li>1. Safari下部の共有ボタンをタップ</li>
+                    <li>2. 「ホーム画面に追加」を選択</li>
+                    <li>3. 「追加」をタップ</li>
+                  </ol>
+                </div>
+                <div className="bg-green-50 p-4 rounded-lg">
+                  <h3 className="font-semibold text-green-800 mb-2 flex items-center gap-2">
+                    <IconDownload size={20} />
+                    Androidの場合
+                  </h3>
+                  <ol className="text-sm text-green-700 space-y-1">
+                    <li>1. Chrome右上のメニューをタップ</li>
+                    <li>2. 「ホーム画面に追加」を選択</li>
+                    <li>3. 「追加」をタップ</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </SwiperSlide>
+
           {/* 完了スライド */}
           <SwiperSlide>
             <div className="flex flex-col items-center justify-center h-full text-center px-8">
@@ -158,13 +211,6 @@ export const Tutorial: React.FC<TutorialProps> = ({ onComplete }) => {
               </button>
             </div>
           </SwiperSlide>
-
-          <button
-            onClick={onComplete}
-            className="absolute bottom-3 right-3 z-10 text-gray-400 hover:text-gray-600 font-bold transition-colors"
-          >
-            スキップする
-          </button>
         </Swiper>
 
         {/* カスタムナビゲーションボタン */}
