@@ -120,8 +120,9 @@ export class SummaryService {
    * @returns 前月の集計
    */
   async getPreviousMonthSummary({ userId, year, month }: GetMonthlySummaryDto) {
-    const previousMonth = month - 1;
-    const previousYear = year;
+    // 1月の場合は前年の12月を指定
+    const previousMonth = month === 1 ? 12 : month - 1;
+    const previousYear = month === 1 ? year - 1 : year;
 
     const previousMonthSummary = await this.prismaService.entry.groupBy({
       by: ['entryType'],
