@@ -5,7 +5,6 @@ import {
   IconChartBar,
   IconCoin,
   IconDeviceMobile,
-  IconWifi,
   IconDownload,
 } from '@tabler/icons-react';
 import Link from 'next/link';
