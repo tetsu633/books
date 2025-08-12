@@ -56,6 +56,7 @@ export default function CategoriesPage() {
       });
     }
     setShowForm(false);
+    setEditingCategory(null);
     reset();
   };
 
@@ -64,6 +65,7 @@ export default function CategoriesPage() {
    * @param category カテゴリ
    */
   const handleEdit = (category: Category) => {
+    setEditingCategory(category);
     setCategoryColor(category.color);
     if (category.type === 'income') {
       setCategoryType('income');
@@ -204,7 +206,6 @@ export default function CategoriesPage() {
                         <button
                           onClick={() => {
                             handleEdit(category);
-                            setEditingCategory(category);
                           }}
                           className="text-gray-500 hover:text-gray-700"
                         >
@@ -244,7 +245,6 @@ export default function CategoriesPage() {
                         <button
                           onClick={() => {
                             handleEdit(category);
-                            setEditingCategory(category);
                           }}
                           className="text-gray-500 hover:text-gray-700"
                         >

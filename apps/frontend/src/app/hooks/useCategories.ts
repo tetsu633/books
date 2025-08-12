@@ -53,16 +53,21 @@ export const useCategories = () => {
    */
   const createCategory = async (category: Category) => {
     if (!session) {
-      setCategories([category, ...categories]);
+      // デモモード時のみ一時的なIDを生成
+      const newCategory = {
+        ...category,
+        id: Date.now(),
+      };
+      setCategories([newCategory, ...categories]);
     } else {
-      await createCategoryApi({
+      const createdCategory = await createCategoryApi({
         userId: session.user.id,
         name: category.name,
         type: category.type,
         color: category.color,
       });
 
-      setCategories([category, ...categories]);
+      setCategories([createdCategory, ...categories]);
     }
   };
 
