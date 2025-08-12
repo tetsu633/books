@@ -26,7 +26,7 @@ export const Tutorial: React.FC<TutorialProps> = ({ onComplete }) => {
     return (
       <button
         onClick={onComplete}
-        className="absolute bottom-0 right-3 z-10 text-gray-400 hover:text-gray-600 font-bold transition-colors"
+        className="absolute bottom-0 right-3 z-10 text-gray-400 hover:text-gray-600 transition-colors"
       >
         スキップする
       </button>
@@ -65,7 +65,6 @@ export const Tutorial: React.FC<TutorialProps> = ({ onComplete }) => {
                 このチュートリアルで基本的な使い方をご紹介します。
               </p>
             </div>
-            <SkipButton />
           </SwiperSlide>
 
           {/* カテゴリ管理の説明 */}
@@ -95,7 +94,6 @@ export const Tutorial: React.FC<TutorialProps> = ({ onComplete }) => {
                 </div>
               </div>
             </div>
-            <SkipButton />
           </SwiperSlide>
 
           {/* 収支入力の説明 */}
@@ -123,7 +121,6 @@ export const Tutorial: React.FC<TutorialProps> = ({ onComplete }) => {
                 </p>
               </div>
             </div>
-            <SkipButton />
           </SwiperSlide>
 
           {/* グラフ表示の説明 */}
@@ -223,6 +220,9 @@ export const Tutorial: React.FC<TutorialProps> = ({ onComplete }) => {
 
         {/* カスタムページネーション */}
         <div className="custom-pagination absolute bottom-8 left-1/2 -translate-x-1/2 z-10"></div>
+
+        {/* スキップボタン */}
+        <SkipButton />
       </div>
     </div>
   );
