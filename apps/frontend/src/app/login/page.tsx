@@ -100,6 +100,18 @@ export default function LoginPage() {
                 </div>
               </div>
 
+              {/* お試しでの収支管理ページへの遷移 */}
+              <div className="mt-6">
+                <Link href="/entries">
+                  <Button variant="outline" className="w-full">
+                    ログインせずにお試し（収支管理）
+                  </Button>
+                </Link>
+                <p className="text-xs text-gray-500 mt-2 text-center">
+                  登録不要のサンプルデータで機能を体験できます
+                </p>
+              </div>
+
               <div className="mt-6 text-center">
                 <p className="text-sm text-gray-600">
                   アカウントをお持ちでない方は
